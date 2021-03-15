@@ -1,0 +1,10 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+</body>
+</html>
