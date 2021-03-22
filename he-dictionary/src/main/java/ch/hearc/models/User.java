@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="user")
@@ -34,10 +35,13 @@ public class User {
 	@Column(nullable=false)
 	private String password;
 	
-	@OneToMany(mappedBy="definition")
+	@Transient
+	private String confirmPassword;
+	
+	@OneToMany(mappedBy="creator")
 	private List<Definition> definitions;
 	
-	@OneToMany(mappedBy="tag")
+	@OneToMany(mappedBy="creator")
 	private List<Tag> tags;
 	
 	@ManyToMany
@@ -53,5 +57,92 @@ public class User {
 			joinColumns = @JoinColumn(name="user_id"),
 			inverseJoinColumns = @JoinColumn(name="definition_id"))
 	private Set<Definition> downvotedDefinitions;
+
+	
+	// GETTERS
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public Boolean getIsModerator() {
+		return isModerator;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+	
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public List<Definition> getDefinitions() {
+		return definitions;
+	}
+
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public Set<Definition> getUpvotedDefinitions() {
+		return upvotedDefinitions;
+	}
+
+	public Set<Definition> getDownvotedDefinitions() {
+		return downvotedDefinitions;
+	}
+
+	//SETTERS
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setIsModerator(Boolean isModerator) {
+		this.isModerator = isModerator;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	public void setDefinitions(List<Definition> definitions) {
+		this.definitions = definitions;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
+	public void setUpvotedDefinitions(Set<Definition> upvotedDefinitions) {
+		this.upvotedDefinitions = upvotedDefinitions;
+	}
+
+	public void setDownvotedDefinitions(Set<Definition> downvotedDefinitions) {
+		this.downvotedDefinitions = downvotedDefinitions;
+	}
+	
+	
 	
 }

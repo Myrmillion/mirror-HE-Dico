@@ -50,4 +50,45 @@ public class Definition {
 			joinColumns = @JoinColumn(name="definition_id"),
 			inverseJoinColumns = @JoinColumn(name="tag_id"))
 	private Set<Tag> containingTags;
+
+	
+	//GETTERS
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public String getWord() {
+		return word;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getnUpvote() {
+		return nUpvote;
+	}
+
+	public Integer getnDownvote() {
+		return nDownvote;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public Set<User> getUpvotes() {
+		return upvotes;
+	}
+
+	public Set<User> getDownvotes() {
+		return downvotes;
+	}
+
+	public Set<Tag> getContainingTags() {
+		return containingTags;
+	}
+
+	
 }
