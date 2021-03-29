@@ -3,6 +3,7 @@ package ch.hearc.models;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,8 +30,9 @@ public class User {
 	@Column(nullable=false,length=100)
 	private String email;
 	
-	@Column(nullable=false,columnDefinition="boolean default false")
-	private Boolean isModerator;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
 	
 	@Column(nullable=false)
 	private String password;
@@ -73,9 +75,6 @@ public class User {
 		return email;
 	}
 
-	public Boolean getIsModerator() {
-		return isModerator;
-	}
 
 	public String getPassword() {
 		return password;
@@ -100,6 +99,10 @@ public class User {
 	public Set<Definition> getDownvotedDefinitions() {
 		return downvotedDefinitions;
 	}
+	
+	public Set<Role> getRoles() {
+		return roles;
+	}
 
 	//SETTERS
 	
@@ -113,10 +116,6 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public void setIsModerator(Boolean isModerator) {
-		this.isModerator = isModerator;
 	}
 
 	public void setPassword(String password) {
@@ -143,6 +142,8 @@ public class User {
 		this.downvotedDefinitions = downvotedDefinitions;
 	}
 	
-	
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 	
 }

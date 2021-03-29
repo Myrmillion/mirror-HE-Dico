@@ -1,4 +1,4 @@
-package ch.hearc.security;
+ package ch.hearc.security;
 
 import javax.sql.DataSource;
 
@@ -27,8 +27,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	private final String USERS_QUERY = "select email, password, true as enabled from user where email=?";
-	//private final String ROLES_QUERY = "select u.email, r.role from user u inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.id) where u.email=?";
+	private final String USERS_QUERY = "select username, password, true as enabled from user where username=?";
+	private final String ROLES_QUERY = "select u.username, r.role from user u inner join user_role ur on (u.id = ur.user_id) inner join role r on (ur.role_id=r.id) where u.username=?";
 
 
 	/**
@@ -39,6 +39,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 		//JDBC Authentication
 		auth.jdbcAuthentication()
 		.usersByUsernameQuery(USERS_QUERY)
+		.authoritiesByUsernameQuery(ROLES_QUERY)
 		.dataSource(dataSource)
 		.passwordEncoder(bCryptPasswordEncoder);
 	}
@@ -48,12 +49,10 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 	{
 		http.authorizeRequests()
 		.antMatchers("/", "/home").permitAll()
-		.antMatchers("/form").authenticated()
-		.antMatchers("/todoByDate").permitAll()
 		.and()
 		.formLogin().loginPage("/login").permitAll()
 		.and()
-		.formLogin().loginPage("/login").failureUrl("/login?error=true").defaultSuccessUrl("/").usernameParameter("email").passwordParameter("password")
+		.formLogin().loginPage("/login").failureUrl("/login?error=true").defaultSuccessUrl("/").usernameParameter("username").passwordParameter("password")
 		.and()
 		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
 		.and()

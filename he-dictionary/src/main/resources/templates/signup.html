@@ -11,7 +11,9 @@
 	
 	<div class="container mt-sm-3">
 		<div th:if="${param.error}">
-			<p style="font-size: 20; color: #FF1C19;" th:text="${msg}">Error</p>
+		<p th:each="error: ${param.errors}">
+			<span style="font-size: 20; color: #FF1C19;" th:text="${error}"></span>
+		</p>
 		</div>
 		<form th:action="@{/signup}" th:object="${user}" method="post">
 		<label for="username">Username</label> <input type="text"

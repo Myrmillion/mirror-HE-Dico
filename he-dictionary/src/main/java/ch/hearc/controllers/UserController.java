@@ -1,15 +1,20 @@
 package ch.hearc.controllers;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import ch.hearc.models.User;
 import ch.hearc.service.UserService;
@@ -32,48 +37,51 @@ public class UserController {
 	public String login(Map<String, Object> model) {		
 		return "login";
 	}
-	
-	@PostMapping("/login")
-	public String connectUser(Map<String, Object> model) {	
-		
-		return "login";
-	}
 
 	@GetMapping("/signup")
-	public String signup(Map<String, Object> model) {
+	public String signup(ModelMap model) {
 		User user = new User();
-		model.put("user", user);
+		model.addAttribute("user", user);
+		
 		
 		return "signup";
 	}
 
 	@PostMapping("/signup")
-	public String createAuthor(@Valid User author, BindingResult bindingResult, Map<String, Object> model) {
+	public ModelAndView createAuthor(@Valid User author, BindingResult bindingResult, ModelMap model) {
 
 		User userExists = userService.findByUsername(author.getUsername());
-
+		List<String> errors = new LinkedList<String>();
 		if (userExists != null) {
-			model.put("msg", "User already exists.");
-			return ("redirect:/signup?error=true");
+			//model.addAttribute("msg", "User already exists.");
+			errors.add("User already exists.");
+			//return ("redirect:/signup?error=true");
 		}
-		else if(author.getPassword() != author.getConfirmPassword())
+		if(!author.getPassword().equals(author.getConfirmPassword()))
 		{
-			model.put("msg", "Passwords does not match");
-			return ("redirect:/signup?error=true");
+			//model.addAttribute("msg", "Passwords does not match");
+			errors.add("Passwords does not match");
+			// ("redirect:/signup?error=true");
 		}
-		else if (bindingResult.hasErrors()) 
+		if (bindingResult.hasErrors()) 
 		{
-			model.put("msg", "Error in fields.");
-			return ("redirect:/signup?error=true");
+			//model.addAttribute("msg", "Error in fields.");
+			errors.add("Error in fields.");
+			//return ("redirect:/signup?error=true");
+		}
+		if(!errors.isEmpty())
+		{
+			model.addAttribute("errors", errors);
+			return new ModelAndView("redirect:/signup?error=true", model);
 		}
 		else 
 		{
 			userService.saveUser(author);
-			model.put("msg", "User has been registered successfully!");
+			//model.put("msg", "User has been registered successfully!");
 			//model.put("author", new User());
-			model.put("author", author);
+			model.addAttribute("author", author);
 			
-			return "login";
+			return new ModelAndView("login");
 		}
 	}
 
