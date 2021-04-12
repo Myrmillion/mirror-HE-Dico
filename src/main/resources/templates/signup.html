@@ -9,12 +9,9 @@
 	
 	<h1>Sign Up</h1>
 	
-	<div class="container mt-sm-3">
-		<div th:if="${param.error}">
-		<p th:each="error: ${param.errors}">
-			<span style="font-size: 20; color: #FF1C19;" th:text="${error}"></span>
-		</p>
-		</div>
+	<div th:replace="fragments/fragments.html :: showErrors"></div>
+	
+	
 		<form th:action="@{/signup}" th:object="${user}" method="post">
 		<label for="username">Username</label> <input type="text"
 					id="username" name="username" th:placeholder="username" class="form-control"

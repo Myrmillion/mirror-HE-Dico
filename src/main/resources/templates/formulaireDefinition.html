@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+	
+	<h1>Create Definition</h1>
+	<section class="text-center">
+	
+	<form action="#" th:action="@{/SaveDefinition}" th:object="${definition}"
+						method="post">
+						
+	<label for="message">Word</label>
+	<input type="text" th:field="*{word}" class="form-control todo-list-input" />
+	<label for="message">Description</label>
+	<input type="text" th:field="*{description}" class="form-control todo-list-input" />
+						
+	<button type="submit" class="btn btn-primary">Submit</button>
+
+	</form>
+	
+	</section>
+</body>
+</html>
