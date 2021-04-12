@@ -1,4 +1,4 @@
-image: maven:latest
+image: ubuntu
 
 variables:
   SOME_VAR: "some value"
@@ -15,7 +15,9 @@ before_script:
   - echo $CI_JOB_STAGE  # calls a predefined variable -  https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
   - echo $CI_COMMIT_SHORT_SHA # calls another predefined variable
 
-build:  
+build:
+  image : maven:latest
+  
   stage: build
   script:
     - echo "Build process"
