@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+	
+	<h1>Home</h1>
+	<section class="text-center">
+	
+	<p>Search a word !</p>
+	<form th:action="@{/search}" method="get">
+	<input type="text" id="word" name="word" th:placeholder="word" />
+	</form>
+	
+	<div th:if="${not #lists.isEmpty(definitions)}">
+	<table>
+	<tr>
+		<th>Word</th>
+		<th>Definition</th>
+	</tr>
+	</table>
+	</div>
+	</section>
+</body>
+</html>
