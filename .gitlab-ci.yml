@@ -21,7 +21,7 @@ build:
   stage: build
   script:
     - echo "Build process"
-    - mvn package -Dmaven.test.skip=true
+    - mvn package -Dskiptests
     - echo "Build ok"
   only:
     - master
