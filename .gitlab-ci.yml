@@ -26,7 +26,7 @@ build:
   only:
     - master
   tags:
-    - alpine-docker
+    - dico-runner
 
 unittest:
   stage: test
@@ -36,7 +36,7 @@ unittest:
   only:
     - master
   tags:
-    - alpine-docker
+    - dico-runner
 
 katalon_test_suite:
   stage: test
@@ -56,7 +56,7 @@ sonarqube:
   only:
     - master
   tags:
-    - alpine-docker
+    - dico-runner
 
 deploy_ssh:
   stage: deploy
