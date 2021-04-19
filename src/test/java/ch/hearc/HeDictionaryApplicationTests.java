@@ -10,8 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 class HeDictionaryApplicationTests {
 
 	@Test
-	void contextLoads() {
+	//void contextLoads() {
 		//Assertions.assertTrue(true);
-	}
+	//}
 
 }
