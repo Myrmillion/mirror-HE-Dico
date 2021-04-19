@@ -32,6 +32,7 @@ unittest:
   stage: test
   script:
     - echo "start test"
+    - mvn test
     - echo "test ok"
   only:
     - master
