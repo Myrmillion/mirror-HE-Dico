@@ -6,7 +6,7 @@ variables:
 stages:
   - build
   - test
-  - sonardcloud
+  - sonarcloud
   - deploy
 
 before_script:
