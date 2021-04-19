@@ -63,12 +63,12 @@ deploy_ssh:
   before_script:
     - echo "do some stuff before"
   script:
-    - echo "deploy apps"
-    - echo "deploy ok"
+    - docker-compose down
+    - docker-compose up -d
   only:
     - master
   tags:
-    - alpine-docker
+    - dico-runner
   when: manual
 
 after_script:
