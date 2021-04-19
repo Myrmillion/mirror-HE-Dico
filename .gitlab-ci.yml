@@ -64,7 +64,7 @@ deploy_ssh:
     - echo "do some stuff before"
   script:
     - docker-compose down
-    - docker-compose up -d
+    - docker-compose up -d --build
   only:
     - master
   tags:
