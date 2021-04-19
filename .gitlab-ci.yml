@@ -53,7 +53,7 @@ deploy_ssh:
   before_script:
     - echo "do some stuff before"
   script:
-    - docker-compose down
+    - docker-compose down --rmi all
     - docker-compose up -d --build
   only:
     - master
