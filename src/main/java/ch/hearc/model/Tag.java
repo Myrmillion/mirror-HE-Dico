@@ -1,4 +1,4 @@
-package ch.hearc.models;
+package ch.hearc.model;
 
 import java.util.Set;
 

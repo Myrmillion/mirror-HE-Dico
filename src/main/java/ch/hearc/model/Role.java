@@ -1,4 +1,4 @@
-package ch.hearc.models;
+package ch.hearc.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

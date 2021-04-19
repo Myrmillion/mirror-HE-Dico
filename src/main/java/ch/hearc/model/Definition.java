@@ -1,4 +1,4 @@
-package ch.hearc.models;
+package ch.hearc.model;
 
 import java.util.Set;
 
@@ -29,10 +29,10 @@ public class Definition {
 	private String description;
 	
 	@Column(nullable=false, columnDefinition="integer default 0")
-	private Integer nUpvote;
+	private Integer nupvote = 0;
 	
 	@Column(nullable=false, columnDefinition="integer default 0")
-	private Integer nDownvote;
+	private Integer ndownvote = 0;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
@@ -52,6 +52,12 @@ public class Definition {
 	private Set<Tag> containingTags;
 
 	
+	public boolean validate()
+	{
+		return (!creator.getUsername().isEmpty() && !word.isEmpty() && !description.isEmpty());
+	}
+	
+	
 	//GETTERS
 	
 	public Integer getId() {
@@ -66,12 +72,12 @@ public class Definition {
 		return description;
 	}
 
-	public Integer getnUpvote() {
-		return nUpvote;
+	public Integer getNupvote() {
+		return nupvote;
 	}
 
-	public Integer getnDownvote() {
-		return nDownvote;
+	public Integer getNdownvote() {
+		return ndownvote;
 	}
 
 	public User getCreator() {
@@ -90,5 +96,45 @@ public class Definition {
 		return containingTags;
 	}
 
+	
+	/* SETTERS */
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setWord(String word) {
+		this.word = word;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setNupvote(Integer nupvote) {
+		this.nupvote = nupvote;
+	}
+
+	public void setNdownvote(Integer ndownvote) {
+		this.ndownvote = ndownvote;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
+	public void setUpvotes(Set<User> upvotes) {
+		this.upvotes = upvotes;
+	}
+
+	public void setDownvotes(Set<User> downvotes) {
+		this.downvotes = downvotes;
+	}
+
+	public void setContainingTags(Set<Tag> containingTags) {
+		this.containingTags = containingTags;
+	}
+
+	
 	
 }

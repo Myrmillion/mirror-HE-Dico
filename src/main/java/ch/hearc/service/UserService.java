@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import ch.hearc.models.User;
 import ch.hearc.repository.UserRepository;
+import ch.hearc.model.Role;
+import ch.hearc.model.User;
 import ch.hearc.repository.RoleRepository;
-import ch.hearc.models.Role;
 
 
 //////////////
