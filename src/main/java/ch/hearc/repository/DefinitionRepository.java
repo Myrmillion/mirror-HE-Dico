@@ -12,6 +12,5 @@ public interface DefinitionRepository extends JpaRepository<Definition, Long> {
 	
 	List<Definition> findByWord(String word);
 	List<Definition> findByWordOrderByNupvoteDesc(String word);
-	
-
+	Definition findById(int id);
 }

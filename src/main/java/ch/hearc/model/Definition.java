@@ -4,6 +4,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,10 +39,10 @@ public class Definition {
 	@JoinColumn(name="user_id")
 	private User creator;
 	
-	@ManyToMany(mappedBy="upvotedDefinitions")
+	@ManyToMany(mappedBy="upvotedDefinitions", fetch=FetchType.EAGER)
 	private Set<User> upvotes;
 	
-	@ManyToMany(mappedBy="downvotedDefinitions")
+	@ManyToMany(mappedBy="downvotedDefinitions", fetch=FetchType.EAGER)
 	private Set<User> downvotes;
 	
 	@ManyToMany

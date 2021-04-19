@@ -20,7 +20,38 @@
 	</form>
 	
 	<div th:if="${not #lists.isEmpty(definitions)}">
-	
+		<div th:each="definition: ${definitions}">
+			<h3 th:text="${definition.word}"></h3>
+			<h4 th:text="${'by ' + definition.creator.username}"></h4>
+			<p th:text="${definition.description}"></p>
+			<div sec:authorize="isAuthenticated()">
+			
+			<span th:text="${definition.nupvote}"></span>
+			<form id="upvoteForm" th:action="@{/Upvote}" method="post" th:unless="${#lists.contains(upvotes,definition.id)}">
+			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+			<button type="submit">Up</button>
+			</form>
+			<form id="upvoteForm" th:action="@{/UnUpvote}" method="post" th:if="${#lists.contains(upvotes,definition.id)}">
+			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+			<button type="submit">take out my upvote lol</button>
+			</form>
+			<span th:text="${definition.ndownvote}"></span>
+			<form id="downvoteForm" th:action="@{/UnDownvote}" method="post" th:if="${#lists.contains(downvotes,definition.id)}">
+			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+			<button type="submit">take out my downvote lol</button>
+			</form>
+			<form id="downvoteForm" th:action="@{/Downvote}" method="post" th:unless="${#lists.contains(downvotes,definition.id)}">
+			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+			<button type="submit">Down</button>
+			</form>
+			</div>
+			<div sec:authorize="not isAuthenticated()">
+			<span th:text="${definition.nupvote}"></span>
+			<button type="submit" disabled>Up</button>
+			<span th:text="${definition.ndownvote}"></span>
+			<button type="submit" disabled>Down</button>
+			</div>
+		</div>
 	</div>
 	</section>
 </body>
