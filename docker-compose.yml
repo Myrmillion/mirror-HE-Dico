@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: my_todo
-      MYSQL_USER: root
+      MYSQL_USER: admin
       MYSQL_PASSWORD: toor
       MYSQL_ROOT_PASSWORD: toor
     volumes:
