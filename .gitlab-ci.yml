@@ -38,16 +38,6 @@ unittest:
   tags:
     - dico-runner
 
-katalon_test_suite:
-  stage: test
-  script:
-    - echo "start katalon test suite"
-    - echo "katalon test suite ok"
-  only:
-    - master
-  tags:
-    - alpine-docker
-
 sonarqube:
   stage: sonarqube
   script:
