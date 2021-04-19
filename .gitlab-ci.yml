@@ -21,7 +21,7 @@ build:
   stage: build
   script:
     - echo "Build process"
-    - mvn package
+    - mvn clean package
     - echo "Build ok"
   only:
     - master
