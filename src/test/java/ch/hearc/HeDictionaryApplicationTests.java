@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 @SpringBootTest
 class HeDictionaryApplicationTests {
 
-	@Test
+	//@Test
 	//void contextLoads() {
 		//Assertions.assertTrue(true);
 	//}
