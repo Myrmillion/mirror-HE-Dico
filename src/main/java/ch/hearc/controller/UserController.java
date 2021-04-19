@@ -1,4 +1,4 @@
-package ch.hearc.controllers;
+package ch.hearc.controller;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import ch.hearc.models.User;
+import ch.hearc.model.User;
 import ch.hearc.service.UserService;
 
 //////////////

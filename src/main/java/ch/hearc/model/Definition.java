@@ -1,4 +1,4 @@
-package ch.hearc.models;
+package ch.hearc.model;
 
 import java.util.Set;
 
@@ -29,10 +29,10 @@ public class Definition {
 	private String description;
 	
 	@Column(nullable=false, columnDefinition="integer default 0")
-	private Integer nupvote;
+	private Integer nupvote = 0;
 	
 	@Column(nullable=false, columnDefinition="integer default 0")
-	private Integer ndownvote;
+	private Integer ndownvote = 0;
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
@@ -72,11 +72,11 @@ public class Definition {
 		return description;
 	}
 
-	public Integer getnUpvote() {
+	public Integer getNupvote() {
 		return nupvote;
 	}
 
-	public Integer getnDownvote() {
+	public Integer getNdownvote() {
 		return ndownvote;
 	}
 

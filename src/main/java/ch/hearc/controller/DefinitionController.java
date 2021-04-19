@@ -1,4 +1,4 @@
-package ch.hearc.controllers;
+package ch.hearc.controller;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ch.hearc.models.Definition;
-import ch.hearc.models.User;
+import ch.hearc.model.Definition;
+import ch.hearc.model.User;
 import ch.hearc.repository.DefinitionRepository;
 import ch.hearc.service.UserService;
 
@@ -57,7 +57,7 @@ public class DefinitionController {
 				model.addAttribute("msg","No definition found with this word.");
 			}
 		}
-		return new ModelAndView("/",model);
+		return new ModelAndView("home",model);
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class DefinitionController {
 			else
 				throw new RuntimeException("The task is not complete ! Please fill all the fields");			
 		}
-		return ((errors.hasErrors()) ? "formulaireDefinition" : "redirect:/");
+		return ((errors.hasErrors()) ? "definition" : "redirect:/");
 	}
 	
 }
