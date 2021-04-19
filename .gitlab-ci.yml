@@ -6,7 +6,7 @@ variables:
 stages:
   - build
   - test
-  - sonarqube
+  - sonardcloud
   - deploy
 
 before_script:
@@ -38,12 +38,12 @@ unittest:
   tags:
     - dico-runner
 
-sonarqube:
-  stage: sonarqube
+sonarcloud:
+  stage: sonarcloud
   script:
-    - echo "start sonarqube stage"
+    - echo "start sonarcloud stage"
     - mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-    - echo "sonarqube ok"
+    - echo "sonarcloud ok"
   only:
     - master
   tags:
