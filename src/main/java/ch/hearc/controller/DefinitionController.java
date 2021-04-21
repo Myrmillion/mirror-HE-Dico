@@ -29,7 +29,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.hearc.model.Definition;
 import ch.hearc.model.User;
+import ch.hearc.model.Tag;
 import ch.hearc.repository.DefinitionRepository;
+import ch.hearc.repository.TagRepository;
 import ch.hearc.repository.UserRepository;
 import ch.hearc.service.UserService;
 import ch.hearc.tools.ErrorHandling;
@@ -40,6 +42,9 @@ public class DefinitionController {
 	@Autowired
 	private DefinitionRepository definitionRepository;
 
+	@Autowired
+	private TagRepository tagRepository;
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -96,6 +101,8 @@ public class DefinitionController {
 	@RequestMapping(value = "/definition/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView formEdit(@PathVariable int id, ModelMap model) {
 		Definition definition = definitionRepository.findById(id);
+		List<Tag> tags = tagRepository.findAll();
+		model.addAttribute("tags",tags);
 		if (definition != null) {
 			model.addAttribute("definition", definition);
 			return new ModelAndView("formEditDef", model);
@@ -267,7 +274,9 @@ public class DefinitionController {
 	@GetMapping("/definition/create")
 	public String form(ModelMap model) {
 		model.put("definition", new Definition());
-
+		
+		List<Tag> tags = tagRepository.findAll();
+		model.addAttribute("tags",tags);
 		//////////////
 		// UPDATE //
 		// CHAP_06 //
@@ -309,7 +318,7 @@ public class DefinitionController {
 			else
 				throw new RuntimeException("The task is not complete ! Please fill all the fields");
 		}
-		return ((errors.hasErrors()) ? "definition" : "redirect:/");
+		return ((errors.hasErrors()) ? "definition" : "redirect:/definitions");
 	}
 
 }

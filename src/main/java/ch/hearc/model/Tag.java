@@ -20,7 +20,7 @@ public class Tag {
 	@Column
 	private Integer id;
 	
-	@Column(nullable=false,length=6)
+	@Column(nullable=false,length=7)
 	private String color;
 	
 	@Column(nullable=false, length=50)
@@ -32,4 +32,52 @@ public class Tag {
 	
 	@ManyToMany(mappedBy="containingTags")
 	private Set<Definition> containedTags;
+	
+	
+	public boolean validate()
+	{
+		return (!creator.getUsername().isEmpty() && !color.isEmpty() && !name.isEmpty());
+	}
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public Set<Definition> getContainedTags() {
+		return containedTags;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
+
+	public void setContainedTags(Set<Definition> containedTags) {
+		this.containedTags = containedTags;
+	}
+	
+	
 }
