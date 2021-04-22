@@ -1,0 +1,143 @@
+/*------------------------------------
+- COLOR he-dico-blue
+------------------------------------*/
+
+.alert-he-dico-blue {
+    color: #080b15;
+    background-color: #91a1d2;
+    border-color: #8395cc;
+}
+
+.alert-he-dico-blue hr {
+    border-top-color: #7086c5;
+}
+
+.alert-he-dico-blue .alert-link {
+    color: #000000;
+}
+
+.badge-he-dico-blue {
+    color: #fff;
+    background-color: #2C3C6C;
+}
+
+.badge-he-dico-blue[href]:hover, .badge-he-dico-blue[href]:focus {
+    color: #fff;
+    background-color: #1d2747;
+}
+
+.bg-he-dico-blue {
+    background-color: #2C3C6C !important;
+}
+
+a.bg-he-dico-blue:hover, a.bg-he-dico-blue:focus,
+button.bg-he-dico-blue:hover,
+button.bg-he-dico-blue:focus {
+    background-color: #1d2747 !important;
+}
+
+.border-he-dico-blue {
+    border-color: #2C3C6C !important;
+}
+
+.btn-he-dico-blue {
+    color: #fff !important;
+    background-color: #2C3C6C !important;
+    border-color: #2C3C6C !important;
+}
+
+.btn-he-dico-blue:hover {
+    color: #fff !important;
+    background-color: #212d52 !important;
+    border-color: #1d2747 !important;
+}
+
+.btn-he-dico-blue:focus, .btn-he-dico-blue.focus {
+    box-shadow: 0 0 0 0.2rem rgba(44, 60, 108, 0.5) !important;
+}
+
+.btn-he-dico-blue.disabled, .btn-he-dico-blue:disabled {
+    color: #fff !important;
+    background-color: #2C3C6C !important;
+    border-color: #2C3C6C !important;
+}
+
+.btn-he-dico-blue:not(:disabled):not(.disabled):active, .btn-he-dico-blue:not(:disabled):not(.disabled).active, .show > .btn-he-dico-blue.dropdown-toggle {
+    color: #fff !important;
+    background-color: #1d2747 !important;
+    border-color: #18213c !important;
+}
+
+.btn-he-dico-blue:not(:disabled):not(.disabled):active:focus, .btn-he-dico-blue:not(:disabled):not(.disabled).active:focus, .show > .btn-he-dico-blue.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(44, 60, 108, 0.5) !important;
+}
+
+.btn-outline-he-dico-blue {
+    color: #2C3C6C !important;
+    background-color: transparent !important;
+    border-color: #2C3C6C !important;
+}
+
+.btn-outline-he-dico-blue:hover {
+    color: #fff !important;
+    background-color: #2C3C6C !important;
+    border-color: #2C3C6C !important;
+}
+
+.btn-outline-he-dico-blue:focus, .btn-outline-he-dico-blue.focus {
+    box-shadow: 0 0 0 0.2rem rgba(44, 60, 108, 0.5) !important;
+}
+
+.btn-outline-he-dico-blue.disabled, .btn-outline-he-dico-blue:disabled {
+    color: #2C3C6C !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-he-dico-blue:not(:disabled):not(.disabled):active, .btn-outline-he-dico-blue:not(:disabled):not(.disabled).active, .show > .btn-outline-he-dico-blue.dropdown-toggle {
+    color: #fff !important;
+    background-color: #2C3C6C !important;
+    border-color: #2C3C6C !important;
+}
+
+.btn-outline-he-dico-blue:not(:disabled):not(.disabled):active:focus, .btn-outline-he-dico-blue:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-he-dico-blue.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(44, 60, 108, 0.5) !important;
+}
+
+.list-group-item-he-dico-blue {
+    color: #080b15;
+    background-color: #8395cc;
+}
+
+.list-group-item-he-dico-blue.list-group-item-action:hover, .list-group-item-he-dico-blue.list-group-item-action:focus {
+    color: #080b15;
+    background-color: #7086c5;
+}
+
+.list-group-item-he-dico-blue.list-group-item-action.active {
+    color: #fff;
+    background-color: #080b15;
+    border-color: #080b15;
+}
+
+.table-he-dico-blue,
+.table-he-dico-blue > th,
+.table-he-dico-blue > td {
+    background-color: #8395cc;
+}
+
+.table-hover .table-he-dico-blue:hover {
+    background-color: #7086c5;
+}
+
+.table-hover .table-he-dico-blue:hover > td,
+.table-hover .table-he-dico-blue:hover > th {
+    background-color: #7086c5;
+}
+
+.text-he-dico-blue {
+    color: #2C3C6C !important;
+}
+
+a.text-he-dico-blue:hover, a.text-he-dico-blue:focus {
+    color: #1d2747 !important;
+}

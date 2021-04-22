@@ -5,21 +5,35 @@
 <title>HE-Dictionary</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<link rel="stylesheet" type="text/css"
-	href="webjars/bootstrap/4.1.3/css/bootstrap.min.css" />
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<link rel="stylesheet" th:href="@{/css/colors.css}">
 
 <link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
 
-<link rel="stylesheet" type="text/css" href="css/styles.css" />
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
 
 </head>
 
 <div th:fragment="navigation">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="/">Accueil</a>
+
+	<!-- The navbar -->
+	<nav class="bg-he-dico-blue navbar navbar-expand-lg navbar-light bg-light px-4">
+		<a class="navbar-brand ml-2" href="/">
+			<img class="navbar-logo" th:src="@{/img/he-dico_logo.png}">
+		</a>
 		<button class="navbar-toggler" type="button" data-toggle="dropdown"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -27,29 +41,41 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
- <ul class="navbar-nav mr-auto">
-		<li class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button"
-				id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false">Dropdown menu</button>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				<a class="dropdown-item" href="/form">Ajouter une tâche</a> 
-				<a class="dropdown-item" href="/">Liste des tâches</a>
-				<div class="dropdown-divider"></div>			
+		<div class="navbar-nav nav-item dropdown ml-auto cursor-pointer mr-2" sec:authorize="isAuthenticated()">
+			<a
+				class="nav-link dropdown-toggle centering"
+				id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+				aria-haspopup="true" aria-expanded="false">
+				THE USERNAME
+			</a>
+
+			<div class="dropdown-menu dropdown-menu-right dropdown-info"
+				aria-labelledby="navbarDropdownMenuLink-4">
+					<a class="dropdown-item"
+					th:href="@{/logout}">Log out</a>
 			</div>
-		</li>
-		</ul>
+		</div>
+		
+		<div class="navbar-nav nav-item ml-auto mr-2" sec:authorize="isAnonymous()">
+		
+			<a class="btn btn-lg btn-he-dico-blue mr-3 font-weight-bold text-uppercase" th:href="@{/login}">
+			Login
+			</a>
+			<a class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase" th:href="@{/signup}">
+			Sign up
+			</a>
+		</div>
 	</nav>
 
 </div>
 
 <div th:fragment="showErrors">
 	<div class="container mt-sm-3">
-	<div th:if="${param.error}">
-	<p th:each="error: ${param.errors}">
-		<span style="font-size: 20; color: #FF1C19;" th:text="${error}"></span>
-	</p>
-	</div>
+		<div th:if="${param.error}">
+			<p th:each="error: ${param.errors}">
+				<span style="font-size: 20; color: #FF1C19;" th:text="${error}"></span>
+			</p>
+		</div>
 	</div>
 </div>
 

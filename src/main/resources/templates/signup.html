@@ -4,29 +4,45 @@
 <head th:insert="fragments/fragments.html :: header">
 </head>
 <body>
-<!-- Replace fragment  -->
+	<!-- Replace fragment  -->
 	<div th:replace="fragments/fragments.html :: navigation"></div>
-	
-	<h1>Sign Up</h1>
-	
-	<div th:replace="fragments/fragments.html :: showErrors"></div>
-	
-	
-		<form th:action="@{/signup}" th:object="${user}" method="post">
-		<label for="username">Username</label> <input type="text"
-					id="username" name="username" th:placeholder="username" class="form-control"
-					required th:field="*{username}"/>
-		<label for="email">Email</label> <input type="email"
-					id="email" name="email" th:placeholder="email" class="form-control"
-					required th:field="*{email}"/>
-		<label for="password">Password</label> <input type="password"
-			id="password" name="password" th:placeholder="password" class="form-control"
-			required th:field="*{password}"/>	
-		<label for="confirmPassword">Confirm password</label> <input type="password"
-		id="confirmPassword" name="confirmPassword" th:placeholder="confirmPassword" class="form-control"
-		required th:field="*{confirmPassword}"/>	
-		<button type="submit" class="btn btn-primary">Sign Up</button>
-		</form>
+
+	<div class="d-flex justify-content-center p-4">
+		<div class="flex-column">
+			<div
+				class="text-center border-035 border-he-dico-blue px-5 py-4 mt-5">
+
+				<div class="mb-4 font-weight-bold display-4">Sign Up</div>
+
+				<div th:replace="fragments/fragments.html :: showErrors"></div>
+
+				<form th:action="@{/signup}" th:object="${user}" method="post">
+					<label class="h5 font-weight-bold" for="username">Username</label>
+					<input
+						type="text" id="username" name="username"
+						th:placeholder="username" class="form-control" required
+						th:field="*{username}" />
+						<label class="h5 mt-3 font-weight-bold" for="email">Email</label>
+					<input type="email" id="email" name="email" th:placeholder="email"
+						class="form-control" required th:field="*{email}" />
+						<label class="h5 mt-3 font-weight-bold" for="password">Password</label>
+						<input
+						type="password" id="password" name="password"
+						th:placeholder="password" class="form-control" required
+						th:field="*{password}" />
+						<label class="h5 mt-3 font-weight-bold" for="confirmPassword">Confirm password</label>
+						<input
+						type="password" id="confirmPassword" name="confirmPassword"
+						th:placeholder="confirmPassword" class="form-control mb-4"
+						required th:field="*{confirmPassword}" />
+					<button type="submit"
+						class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase mt-2">Sign
+						Up</button>
+				</form>
+			</div>
+
+		</div>
 	</div>
+
 </body>
 </html>

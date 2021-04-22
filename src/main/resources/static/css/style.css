@@ -1,0 +1,11 @@
+.navbar-logo {
+	width:6.4rem;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.border-035 {
+  border: 0.35em solid !important;
+}
