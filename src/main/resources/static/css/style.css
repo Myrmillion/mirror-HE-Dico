@@ -1,3 +1,7 @@
+body {
+	background-color:rgba(52,101,164,0.80) !important;
+}
+
 .navbar-logo {
 	width:6.0rem;
 }

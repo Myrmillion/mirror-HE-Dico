@@ -17,7 +17,7 @@
 					th:href="@{/tag/create}">Créer un nouveau tag</a>
 
 				<div th:if="${not #lists.isEmpty(tags)}">
-					<div class="border-035 border-he-dico-blue p-4 mb-4"
+					<div class="border-035 border-he-dico-blue p-4 mb-4 bg-white"
 						th:each="tag: ${tags}">
 						<div class="display-4 mb-3 font-weight-bold font-size-225" th:text="${tag.name}"
 							th:style="|color:${tag.color};|"></div>
