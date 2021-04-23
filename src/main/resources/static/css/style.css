@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+.border-020 {
+  border: 0.20em solid !important;
+}
+
 .border-035 {
   border: 0.35em solid !important;
 }
