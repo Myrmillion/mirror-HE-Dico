@@ -69,7 +69,7 @@ public class TagController {
 			tagRepository.delete(tagToDelete);
 		}
 
-		return new ModelAndView("my-tags", model);
+		return new ModelAndView("redirect:/tags", model);
 	}
 	
 	@PostMapping("/EditTag")
@@ -85,7 +85,7 @@ public class TagController {
 			return new ModelAndView("my-tags", model);
 
 		} else {
-			ErrorHandling.activateErrors(model,"Couldn't update tag !");
+			ErrorHandling.activateErrors(model, "Couldn't update tag !");
 			return new ModelAndView("my-tags", model);
 		}
 	}

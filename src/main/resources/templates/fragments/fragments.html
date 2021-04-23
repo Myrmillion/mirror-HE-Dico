@@ -13,6 +13,11 @@
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
 
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+	integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+	crossorigin="anonymous" />
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 	crossorigin="anonymous"></script>
@@ -20,6 +25,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
 	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
 	crossorigin="anonymous"></script>
+
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
@@ -30,36 +36,39 @@
 <div th:fragment="navigation">
 
 	<!-- The navbar -->
-	<nav class="bg-he-dico-blue navbar navbar-expand-lg navbar-light bg-light px-4">
-		<a class="navbar-brand ml-2" th:href="@{/}"> <img class="navbar-logo"
-			th:src="@{/img/he-dico_logo.png}">
+	<nav
+		class="bg-he-dico-blue navbar navbar-expand-lg navbar-light bg-light px-4">
+		<a class="navbar-brand ml-2" th:href="@{/}"> <img
+			class="navbar-logo" th:src="@{/img/he-dico_logo.png}">
 		</a>
-		<button class="btn-lg navbar-toggler mr-2" type="button" data-toggle="collapse"
-			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
-			aria-expanded="false" aria-label="Toggle navigation">
+		<button class="btn-lg navbar-toggler mr-2" type="button"
+			data-toggle="collapse" data-target="#navbarNavAltMarkup"
+			aria-controls="navbarNavAltMarkup" aria-expanded="false"
+			aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
-		<div class="collapse navbar-collapse navbar-nav nav-item align-items-start pl-4 mr-2" id="navbarNavAltMarkup">
-			
-			<a class="navbar-brand mr-5" th:classappend="${#httpServletRequest.requestURI eq '/' ? 'font-weight-bold' : 'font-weight-normal'}" th:href="@{/}">
-				Home
-			</a>
-			
-			<a sec:authorize="isAuthenticated()" class="navbar-brand mr-5" th:classappend="${#httpServletRequest.requestURI eq '/definitions' ? 'font-weight-bold' : 'font-weight-normal'}" th:href="@{/definitions}">
-				Mes définitions
-			</a>
-			
-			<a sec:authorize="isAuthenticated()" class="navbar-brand" th:classappend="${#httpServletRequest.requestURI eq '/tags' ? 'font-weight-bold' : 'font-weight-normal'}" th:href="@{/tags}">
-				Mes tags
-			</a>
-			
+		<div
+			class="collapse navbar-collapse navbar-nav nav-item align-items-start pl-4 mr-2"
+			id="navbarNavAltMarkup">
+
+			<a class="navbar-brand mr-5"
+				th:classappend="${#httpServletRequest.requestURI eq '/' ? 'font-weight-bold' : 'font-weight-normal'}"
+				th:href="@{/}"> Home </a> <a sec:authorize="isAuthenticated()"
+				class="navbar-brand mr-5"
+				th:classappend="${#httpServletRequest.requestURI eq '/definitions' ? 'font-weight-bold' : 'font-weight-normal'}"
+				th:href="@{/definitions}"> Mes définitions </a> <a
+				sec:authorize="isAuthenticated()" class="navbar-brand"
+				th:classappend="${#httpServletRequest.requestURI eq '/tags' ? 'font-weight-bold' : 'font-weight-normal'}"
+				th:href="@{/tags}"> Mes tags </a>
+
 			<div class="navbar-nav nav-item dropdown ml-auto cursor-pointer"
 				sec:authorize="isAuthenticated()">
-				<a class="nav-link dropdown-toggle centering btn btn-lg btn-he-dico-blue px-3"
+				<a
+					class="nav-link dropdown-toggle centering btn btn-lg btn-he-dico-blue px-3"
 					id="navbarDropdownMenuLink-4" data-toggle="dropdown"
-					aria-haspopup="true" aria-expanded="false">
-					<span sec:authentication="name"></span>
+					aria-haspopup="true" aria-expanded="false"> <span
+					sec:authentication="name"></span>
 				</a>
 
 				<div class="dropdown-menu dropdown-menu-right dropdown-info"
@@ -68,11 +77,13 @@
 				</div>
 			</div>
 
-			<div class="navbar-nav nav-item ml-auto d-inline-block" sec:authorize="isAnonymous()">
+			<div class="navbar-nav nav-item ml-auto d-inline-block"
+				sec:authorize="isAnonymous()">
 
-				<a class="btn btn-lg btn-he-dico-blue mr-3 font-weight-bold text-uppercase"
-					th:href="@{/login}">Login</a>
-				<a class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase"
+				<a
+					class="btn btn-lg btn-he-dico-blue mr-3 font-weight-bold text-uppercase"
+					th:href="@{/login}">Login</a> <a
+					class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase"
 					th:href="@{/signup}">Sign up</a>
 			</div>
 		</div>
