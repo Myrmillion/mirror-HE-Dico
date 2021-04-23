@@ -5,23 +5,39 @@
 </head>
 <body>
 <!-- Replace fragment  -->
-	<div th:replace="fragments/fragments.html :: navigation"></div>
+	<div th:replace="fragments/fragments.html :: navigation"></div>	
 	
-	<h1>Create Definition</h1>
-	<section class="text-center">
+	<div class="d-flex justify-content-center p-4">
+		<div class="flex-column w-50">
+			<div class="text-center border-035 border-he-dico-blue px-5 py-4 mt-5">		
+				
+				<div id="blockTags" class="mb-0">
+					<div class="h5 font-weight-bold">Tag(s)</div>
+					
+					<div th:each="tag : ${tags}" class="d-inline-block mr-2">		
+						<label th:for="'tag-'+${tag.id}" class="mb-0 align-middle font-weight-bold text-uppercase" th:style="|color:${tag.color};|" th:text="${tag.name}"></label>
+					    <input type="hidden" th:value="*{id}"/>
+					    <input type="hidden" th:value="*{color}"/>
+					    <input type="checkbox" th:value="*{name}" class="align-middle" th:id="'tag-'+${tag.id}" th:name="'tag-'+${tag.id}"/>
+					</div>
+				</div>
+				
+				<form class="mt-3" action="#" th:action="@{/EditDefinition}" th:object="${definition}"
+					method="post">
+					
+					<input type="hidden" th:field="*{id}" id="defID" name="defid">
+					<label class="h5 font-weight-bold" for="message">Mot ou expression</label>
+					<input type="text" th:field="*{word}" class="form-control todo-list-input" />
+					<label class="h5 mt-3 font-weight-bold" for="message">Description</label>
+					<input type="text" th:field="*{description}" class="form-control todo-list-input mb-4" />
+										
+					<button type="submit" class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase mt-2">Modifier</button>
+				
+				</form>	
+			
+			</div>
+		</div>
+	</div>
 	
-	<form action="#" th:action="@{/EditDefinition}" th:object="${definition}"
-						method="post">
-	<input type="hidden" th:field="*{id}" id="defID" name="defid">
-	<label for="message">Word</label>
-	<input type="text" th:field="*{word}" class="form-control todo-list-input" />
-	<label for="message">Description</label>
-	<input type="text" th:field="*{description}" class="form-control todo-list-input" />
-						
-	<button type="submit" class="btn btn-primary">Edit</button>
-
-	</form>
-	
-	</section>
 </body>
 </html>

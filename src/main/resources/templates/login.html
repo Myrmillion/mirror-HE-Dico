@@ -18,6 +18,7 @@
 						invalid, please verify</p>
 				</div>
 				<div th:if="${param.logout}">You have been logged out.</div>
+				
 				<form th:action="@{/login}" method="post">
 					<div class="form-group">
 						<label class="h5 font-weight-bold" for="username">Username</label>

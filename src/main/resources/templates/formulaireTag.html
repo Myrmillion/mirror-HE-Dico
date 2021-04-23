@@ -7,20 +7,27 @@
 <!-- Replace fragment  -->
 	<div th:replace="fragments/fragments.html :: navigation"></div>
 	
-	<h1>Create Definition</h1>
-	<section class="text-center">
+	<div class="d-flex justify-content-center p-4">
+		<div class="flex-column w-25">
+			<div class="text-center border-035 border-he-dico-blue px-5 py-4 mt-5">
+		
+				<form action="#" th:action="@{/SaveTag}" th:object="${tag}" method="post">
+									
+					<label class="h5 font-weight-bold" for="message">Label</label>
+					<input type="text" th:field="*{name}" class="form-control todo-list-input" />
+					<label class="h5 mt-3 font-weight-bold" for="message">Couleur</label>
+					<input type="color" th:field="*{color}" class="form-control todo-list-input mb-4" />
+										
+					<button type="submit" class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase mt-2">Créer</button>
+			
+				</form>
+			
+			</div>
+		</div>
+	</div>
 	
-	<form action="#" th:action="@{/SaveTag}" th:object="${tag}"
-						method="post">
-						
-	<label for="message">Word</label>
-	<input type="text" th:field="*{name}" class="form-control todo-list-input" />
-	<label for="message">Description</label>
-	<input type="color" th:field="*{color}" class="form-control todo-list-input" />
-						
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<section class="text-center">
 
-	</form>
 	
 	</section>
 </body>
