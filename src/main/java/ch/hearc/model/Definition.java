@@ -2,6 +2,7 @@ package ch.hearc.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,10 +40,10 @@ public class Definition {
 	@JoinColumn(name="user_id")
 	private User creator;
 	
-	@ManyToMany(mappedBy="upvotedDefinitions", fetch=FetchType.EAGER)
+	@ManyToMany(mappedBy="upvotedDefinitions", fetch=FetchType.EAGER, cascade= {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<User> upvotes;
 	
-	@ManyToMany(mappedBy="downvotedDefinitions", fetch=FetchType.EAGER)
+	@ManyToMany(mappedBy="downvotedDefinitions", fetch=FetchType.EAGER, cascade= {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<User> downvotes;
 	
 	@ManyToMany

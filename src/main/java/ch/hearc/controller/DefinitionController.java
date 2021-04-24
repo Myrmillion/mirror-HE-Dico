@@ -300,7 +300,7 @@ public class DefinitionController {
 
 		DefinitionWrapper definitionWrapper = new DefinitionWrapper();
 		List<Tag> tags = tagRepository.findAll();
-
+		
 		List<TagSelected> tagsSelected = tags.stream().map(tag -> {
 			TagSelected tagSelected = new TagSelected();
 			tagSelected.setTag(tag);
@@ -351,13 +351,15 @@ public class DefinitionController {
 
 				// Save using Chap5 JPA query
 				if (definition.validate()) {
-
+					if(definitionWrapper.getTags()!=null)
+					{
 					Set<Tag> tags = definitionWrapper.getTags().stream()//
 							.filter(TagSelected::getSelected)//
 							.map(TagSelected::getTag)//
 							.collect(Collectors.toSet());//
 
-					definition.setContainingTags(tags);
+					definition.setContainingTags(tags);			
+					}
 					definitionRepository.save(definition);
 				} else {
 					return MessageHandling.redirectWithErrors("redirect:/definition/create",  "Please fill all the fields !");
