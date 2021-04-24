@@ -53,7 +53,7 @@
 			id="navbarNavAltMarkup">
 
 			<a class="navbar-brand mr-5"
-				th:classappend="${#httpServletRequest.requestURI eq '/' ? 'font-weight-bold' : 'font-weight-normal'}"
+				th:classappend="${#httpServletRequest.requestURI eq '/' or #httpServletRequest.requestURI eq '/search' ? 'font-weight-bold' : 'font-weight-normal'}"
 				th:href="@{/}"> Home </a>
 			<a sec:authorize="isAuthenticated()"
 				class="navbar-brand mr-5"
