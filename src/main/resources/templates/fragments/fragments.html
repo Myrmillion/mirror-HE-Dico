@@ -96,20 +96,28 @@
 <div th:fragment="showErrors">
 	<div class="container mt-sm-3">
 		<div th:if="${param.error}">
-			<p th:each="error: ${param.errors}">
-				<span style="font-size: 20; color: #FF1C19;" th:text="${error}"></span>
-			</p>
+			<div th:each="error: ${param.errors}">
+				<div class="alert alert-danger alert-dismissible fade show">
+	    			<button type="button" class="close" data-dismiss="alert">&times;</button>
+	    			<strong>Error !</strong> <span th:text="${error}"></span>
+	  			</div>
+			</div>
 		</div>
 	</div>
 </div>
 
 <div th:fragment="showSuccesses">
 	<div class="container mt-sm-3">
-	<div th:if="${param.success}">
-	<p th:each="success: ${param.successes}">
-		<span style="font-size: 20; color: green;" th:text="${success}"></span>
-	</p>
-	</div>
+		<div th:if="${param.success}">
+			<div th:each="success: ${param.successes}">
+			
+				<div class="alert alert-success alert-dismissible fade show">
+	    			<button type="button" class="close" data-dismiss="alert">&times;</button>
+	    			<strong>Success !</strong> <span th:text="${success}"></span>
+	  			</div>
+
+			</div>
+		</div>
 	</div>
 </div>
 
