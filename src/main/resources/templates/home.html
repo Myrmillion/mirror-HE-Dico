@@ -74,9 +74,11 @@
 
                         <div class="font-weight-bold h5" sec:authorize="not isAuthenticated()">
                             <span th:text="${definition.nupvote}"></span>
-                            <button class="btn btn-lg btn-success" disabled type="submit"><i class="fas fa-thumbs-up"></i></button>
+                            <button class="btn btn-lg btn-success" data-toggle="tooltip" data-placement="top" title="You must be logged in." type="submit" disabled>
+                            	<i class="fas fa-thumbs-up"></i>
+                           	</button>
                             <span th:text="${definition.ndownvote}"></span>
-                            <button class="btn btn-lg btn-danger" disabled type="submit"><i class="fas fa-thumbs-down"></i></button>
+                            <button class="btn btn-lg btn-danger" data-toggle="tooltip" data-placement="top" title="You must be logged in." type="submit" disabled><i class="fas fa-thumbs-down"></i></button>
                         </div>
                     </div>
                 </div>
