@@ -1,56 +1,83 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- Insert header fragment -->
+
 <head th:insert="fragments/fragments.html :: header">
 </head>
+
 <body>
-<!-- Replace fragment  -->
-	<div th:replace="fragments/fragments.html :: navigation"></div>
+    <!-- Replace fragment  -->
+    <div th:replace="fragments/fragments.html :: navigation"></div>
+
+    <div th:replace="fragments/fragments.html :: showErrors"></div>
+
+    <div class="d-flex justify-content-center p-4">
+        <div class="flex-column w-50">
+            <div class="text-center">
+
+				<div class="mb-5">
+	                <div class="display-4 font-weight-bold text-white mb-2">Cherchez un mot : </div>
+	                <form th:action="@{/search}" class="text-center d-block m-auto" method="get">
+	                    <input type="text" class="w-75 h3 align-middle input-word d-inline-block mb-2" id="word" name="word" th:placeholder="word" /><br>
+	                    <button type="submit" class="btn btn-primary align-middle button-mine d-inline-block"><i class="fas fa-search"></i></button>
+	                </form>
+                </div>
+
+                <div th:if="${not #lists.isEmpty(definitions)}">
+                    <div class="border-035 border-he-dico-blue p-4 text-left mb-4 bg-white" th:each="definition: ${definitions}">
+                        <div class="display-4 mb-3 font-weight-bold" th:text="${definition.word}"></div>                     
+                        <div class="h5 mb-3" th:text="${definition.description}"></div>
+                        <div class="h5">
+                        	<div class="font-weight-bold d-inline-block">by</div>
+                        	<div class="font-weight-bold text-primary d-inline-block" th:text="${definition.creator.username}"></div>
+                        </div>
+                        
+                        <div class="h4 mt-4" sec:authorize="isAuthenticated()">
+							
+							<div class="d-inline-block mr-3">
+								<span class="font-weight-bold" th:text="${definition.nupvote}"></span>
 	
-	<div th:replace="fragments/fragments.html :: showErrors"></div>
-	
-	<section class="text-center">
-	
-	<p>Search a word !</p>
-	<form th:action="@{/search}" method="get">
-	<input type="text" id="word" name="word" th:placeholder="word" />
-	<button type="submit" class="btn btn-primary">Search</button>
-	</form>
-	
-	<div th:if="${not #lists.isEmpty(definitions)}">
-		<div th:each="definition: ${definitions}">
-			<h3 th:text="${definition.word}"></h3>
-			<h4 th:text="${'by ' + definition.creator.username}"></h4>
-			<p th:text="${definition.description}"></p>
-			<div sec:authorize="isAuthenticated()">
-			
-			<span th:text="${definition.nupvote}"></span>
-			<form id="upvoteForm" th:action="@{/Upvote}" method="post" th:unless="${#lists.contains(upvotes,definition.id)}">
-			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
-			<button type="submit">Up</button>
-			</form>
-			<form id="upvoteForm" th:action="@{/UnUpvote}" method="post" th:if="${#lists.contains(upvotes,definition.id)}">
-			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
-			<button type="submit">take out my upvote lol</button>
-			</form>
-			<span th:text="${definition.ndownvote}"></span>
-			<form id="downvoteForm" th:action="@{/UnDownvote}" method="post" th:if="${#lists.contains(downvotes,definition.id)}">
-			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
-			<button type="submit">take out my downvote lol</button>
-			</form>
-			<form id="downvoteForm" th:action="@{/Downvote}" method="post" th:unless="${#lists.contains(downvotes,definition.id)}">
-			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
-			<button type="submit">Down</button>
-			</form>
-			</div>
-			<div sec:authorize="not isAuthenticated()">
-			<span th:text="${definition.nupvote}"></span>
-			<button type="submit" disabled>Up</button>
-			<span th:text="${definition.ndownvote}"></span>
-			<button type="submit" disabled>Down</button>
-			</div>
-		</div>
-	</div>
-	</section>
+	                            <form id="upvoteForm" class="d-inline-block" th:action="@{/Upvote}" method="post"
+	                                th:unless="${#lists.contains(upvotes,definition.id)}">
+	                                <input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+	                                <button class="btn btn-lg btn-success" type="submit"><i class="fas fa-thumbs-up"></i></button>
+	                            </form>
+	                            
+	                            <form id="upvoteForm" class="d-inline-block" th:action="@{/UnUpvote}" method="post"
+	                                th:if="${#lists.contains(upvotes,definition.id)}">
+	                                <input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+	                                <button class="btn btn-lg btn-success" type="submit"><i class="fas fa-thumbs-up"></i></button>
+	                            </form>
+                            </div>
+                            
+                            <div class="d-inline-block">
+	                            <span class="font-weight-bold" th:text="${definition.ndownvote}"></span>
+	                            
+	                            <form id="downvoteForm" class="d-inline-block" th:action="@{/UnDownvote}" method="post"
+	                                th:if="${#lists.contains(downvotes,definition.id)}">
+	                                <input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+	                                <button class="btn btn-lg btn-danger" type="submit"><i class="fas fa-thumbs-down"></i></button>
+	                            </form>
+	                            
+	                            <form id="downvoteForm" class="d-inline-block" th:action="@{/Downvote}" method="post"
+	                                th:unless="${#lists.contains(downvotes,definition.id)}">
+	                                <input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+	                                <button class="btn btn-lg btn-danger" type="submit"><i class="fas fa-thumbs-down"></i></button>
+	                            </form>
+                            </div>
+                        </div>
+
+                        <div sec:authorize="not isAuthenticated()">
+                            <span th:text="${definition.nupvote}"></span>
+                            <button type="submit" disabled>Up</button>
+                            <span th:text="${definition.ndownvote}"></span>
+                            <button type="submit" disabled>Down</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

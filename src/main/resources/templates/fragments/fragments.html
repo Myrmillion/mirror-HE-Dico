@@ -49,15 +49,17 @@
 		</button>
 
 		<div
-			class="collapse navbar-collapse navbar-nav nav-item align-items-start pl-4 mr-2"
+			class="collapse navbar-collapse navbar-nav nav-item align-items-start align-items-center pl-4 mr-2"
 			id="navbarNavAltMarkup">
 
 			<a class="navbar-brand mr-5"
 				th:classappend="${#httpServletRequest.requestURI eq '/' ? 'font-weight-bold' : 'font-weight-normal'}"
-				th:href="@{/}"> Home </a> <a sec:authorize="isAuthenticated()"
+				th:href="@{/}"> Home </a>
+			<a sec:authorize="isAuthenticated()"
 				class="navbar-brand mr-5"
 				th:classappend="${#httpServletRequest.requestURI eq '/definitions' ? 'font-weight-bold' : 'font-weight-normal'}"
-				th:href="@{/definitions}"> Mes définitions </a> <a
+				th:href="@{/definitions}"> Mes définitions </a>
+				<a
 				sec:authorize="isAuthenticated()" class="navbar-brand"
 				th:classappend="${#httpServletRequest.requestURI eq '/tags' ? 'font-weight-bold' : 'font-weight-normal'}"
 				th:href="@{/tags}"> Mes tags </a>

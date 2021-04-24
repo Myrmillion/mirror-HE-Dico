@@ -1,9 +1,18 @@
 body {
+	height:100vh;
 	background-color:rgba(52,101,164,0.80) !important;
+}
+
+.input-word {
+	height: 3.4rem;
 }
 
 .navbar-logo {
 	width:6.0rem;
+}
+
+.button-mine {
+	font-size: 1.65rem !important;
 }
 
 .cursor-pointer:hover {
