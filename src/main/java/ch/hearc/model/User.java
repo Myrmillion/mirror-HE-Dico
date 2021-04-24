@@ -30,7 +30,7 @@ public class User {
 	@Column(nullable=false,length=100)
 	private String email;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade= {CascadeType.PERSIST,CascadeType.REMOVE})
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 	
