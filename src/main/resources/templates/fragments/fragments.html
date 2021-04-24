@@ -53,4 +53,14 @@
 	</div>
 </div>
 
+<div th:fragment="showSuccesses">
+	<div class="container mt-sm-3">
+	<div th:if="${param.success}">
+	<p th:each="success: ${param.successes}">
+		<span style="font-size: 20; color: green;" th:text="${success}"></span>
+	</p>
+	</div>
+	</div>
+</div>
+
 </html>

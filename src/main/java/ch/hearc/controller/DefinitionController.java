@@ -1,13 +1,12 @@
 package ch.hearc.controller;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.Utilities;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -28,13 +27,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ch.hearc.model.Definition;
-import ch.hearc.model.User;
 import ch.hearc.model.Tag;
+import ch.hearc.model.User;
 import ch.hearc.repository.DefinitionRepository;
 import ch.hearc.repository.TagRepository;
 import ch.hearc.repository.UserRepository;
 import ch.hearc.service.UserService;
-import ch.hearc.tools.ErrorHandling;
+import ch.hearc.tools.MessageHandling;
+import ch.hearc.wrapper.DefinitionWrapper;
+import ch.hearc.wrapper.TagSelected;
 
 @Controller
 public class DefinitionController {
@@ -44,10 +45,10 @@ public class DefinitionController {
 
 	@Autowired
 	private TagRepository tagRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -64,18 +65,20 @@ public class DefinitionController {
 
 			if (definitions.size() > 0) {
 				model.addAttribute("definitions", definitions);
-				
-				//upvotes and downvotes
+
+				// upvotes and downvotes
 				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 				User user = userService.findByUsername(auth.getName());
 				if (user != null) {
-					List<Integer> upvotes = user.getUpvotedDefinitions().stream().map(Definition::getId).collect(Collectors.toList());
-					List<Integer> downvotes = user.getDownvotedDefinitions().stream().map(Definition::getId).collect(Collectors.toList());
-					model.addAttribute("upvotes",upvotes);
-					model.addAttribute("downvotes",downvotes);
+					List<Integer> upvotes = user.getUpvotedDefinitions().stream().map(Definition::getId)
+							.collect(Collectors.toList());
+					List<Integer> downvotes = user.getDownvotedDefinitions().stream().map(Definition::getId)
+							.collect(Collectors.toList());
+					model.addAttribute("upvotes", upvotes);
+					model.addAttribute("downvotes", downvotes);
 				}
 			} else {
-				ErrorHandling.activateErrors(model,"No definition found with this word.");
+				MessageHandling.activateErrors(model, "No definition found with this word.");
 			}
 		}
 		return new ModelAndView("home", model);
@@ -90,7 +93,7 @@ public class DefinitionController {
 			if (definitions.size() > 0) {
 				model.addAttribute("definitions", definitions);
 			} else {
-				ErrorHandling.activateErrors(model,"No definitions created !");
+				MessageHandling.activateErrors(model, "No definitions created !");
 			}
 			return new ModelAndView("my-definitions", model);
 		} else {
@@ -101,10 +104,30 @@ public class DefinitionController {
 	@RequestMapping(value = "/definition/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView formEdit(@PathVariable int id, ModelMap model) {
 		Definition definition = definitionRepository.findById(id);
-		List<Tag> tags = tagRepository.findAll();
-		model.addAttribute("tags",tags);
+		
 		if (definition != null) {
-			model.addAttribute("definition", definition);
+			List<Tag> tags = tagRepository.findAll();
+			DefinitionWrapper definitionWrapper = new DefinitionWrapper();
+			definitionWrapper.setDefinition(definition);
+			List<Integer> tagsDefinition = definition.getContainingTags()//
+					.stream()//
+					.map(Tag::getId)//
+					.collect(Collectors.toList());
+			List<TagSelected> tagsSelected = new LinkedList<TagSelected>();
+			for(Tag tag : tags)
+			{
+				TagSelected tagSelected = new TagSelected();
+				tagSelected.setTag(tag);
+				boolean selected = false;
+				if(tagsDefinition.contains(tag.getId()))
+				{
+					selected = true;
+				}
+				tagSelected.setSelected(selected);
+				tagsSelected.add(tagSelected);
+			}
+			definitionWrapper.setTags(tagsSelected);
+			model.addAttribute("definitionWrapper", definitionWrapper);
 			return new ModelAndView("formEditDef", model);
 		} else {
 			return new ModelAndView("my-definitions", model);
@@ -113,21 +136,36 @@ public class DefinitionController {
 	}
 
 	@PostMapping("/EditDefinition")
-	public ModelAndView editDefinition(@Validated @ModelAttribute Definition definition, BindingResult errors,
-			ModelMap model, RedirectAttributes redirAttrs) {
+	public ModelAndView editDefinition(@Validated @ModelAttribute DefinitionWrapper definitionWrapper, BindingResult errors,
+			ModelMap model, RedirectAttributes redirAttrs, HttpServletRequest request) {
+		String referer = request.getHeader("Referer");
 		if (!errors.hasErrors()) {
-			Definition definitionToUpdate = definitionRepository.findById(definition.getId());
+			Definition definitionFromWrapper = definitionWrapper.getDefinition();
+			Definition definitionToUpdate = definitionRepository.findById(definitionFromWrapper.getId());
 			if (definitionToUpdate != null) {
-				definitionToUpdate.setWord(definition.getWord());
-				definitionToUpdate.setDescription(definition.getDescription());
+				definitionFromWrapper.setCreator(definitionToUpdate.getCreator());
+				if(definitionFromWrapper.validate())
+				{
+				definitionToUpdate.setWord(definitionFromWrapper.getWord());
+				definitionToUpdate.setDescription(definitionFromWrapper.getDescription());
+				Set<Tag> tags = definitionWrapper.getTags().stream()//
+						.filter(TagSelected::getSelected)//
+						.map(TagSelected::getTag)//
+						.collect(Collectors.toSet());//
+				
+				definitionToUpdate.setContainingTags(tags);
 				definitionRepository.save(definitionToUpdate);
+				return MessageHandling.redirectWithSuccess("redirect:/definitions", "Definition Updated !");
+				}
+				return MessageHandling.redirectWithErrors("redirect:"+referer, "Missing fields");
 			}
-			return new ModelAndView("my-definitions", model);
+			//return new ModelAndView("my-definitions", model);
 
-		} else {
-			ErrorHandling.activateErrors(model,"Couldn't update definition !");
-			return new ModelAndView("my-definitions", model);
-		}
+		} 
+			//MessageHandling.activateErrors(model, "Couldn't update definition !");
+			//return new ModelAndView("my-definitions", model);
+			
+			return MessageHandling.redirectWithErrors("redirect:" + referer, "Couldn't updated definition.");
 	}
 
 	@RequestMapping(value = "/definition/delete", method = RequestMethod.POST)
@@ -152,24 +190,22 @@ public class DefinitionController {
 				boolean upvoted = user.getUpvotedDefinitions()//
 						.stream()//
 						.map(Definition::getId)//
-						.anyMatch(idUpvoted -> idUpvoted.intValue()==definition.getId().intValue());
+						.anyMatch(idUpvoted -> idUpvoted.intValue() == definition.getId().intValue());
 				if (upvoted) {
-					ErrorHandling.activateErrors(model, "Definition already upvoted.");
+					MessageHandling.activateErrors(model, "Definition already upvoted.");
 				} else {
-					definition.setNupvote(definition.getNupvote()+1);
+					definition.setNupvote(definition.getNupvote() + 1);
 					user.getUpvotedDefinitions().add(definition);
 					userRepository.save(user);
 					definitionRepository.save(definition);
 				}
 			}
 
-		}
-		else
-		{
-			ErrorHandling.activateErrors(model, "Cannot delete this definition.");
+		} else {
+			MessageHandling.activateErrors(model, "Cannot delete this definition.");
 		}
 		String referer = request.getHeader("Referer");
-		return new ModelAndView("redirect:"+referer, model);
+		return new ModelAndView("redirect:" + referer, model);
 	}
 
 	@PostMapping("/Downvote")
@@ -179,91 +215,79 @@ public class DefinitionController {
 		if (definition != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			User user = userService.findByUsername(auth.getName());
-			
+
 			if (user != null) {
 				boolean downvoted = user.getDownvotedDefinitions()//
 						.stream()//
 						.map(Definition::getId)//
-						.anyMatch(idDownvoted -> idDownvoted.intValue()==definition.getId().intValue());
+						.anyMatch(idDownvoted -> idDownvoted.intValue() == definition.getId().intValue());
 				if (downvoted) {
-					ErrorHandling.activateErrors(model, "Definition already downvoted.");
+					MessageHandling.activateErrors(model, "Definition already downvoted.");
 				} else {
-					definition.setNdownvote(definition.getNdownvote()+1);
+					definition.setNdownvote(definition.getNdownvote() + 1);
 					user.getDownvotedDefinitions().add(definition);
 					userRepository.save(user);
 					definitionRepository.save(definition);
 				}
 			}
 
-		}
-		else
-		{
-			ErrorHandling.activateErrors(model, "Cannot delete this definition.");
+		} else {
+			MessageHandling.activateErrors(model, "Cannot delete this definition.");
 		}
 		String referer = request.getHeader("Referer");
-		return new ModelAndView("redirect:"+referer, model);
+		return new ModelAndView("redirect:" + referer, model);
 
 	}
-	
-	
+
 	@PostMapping("/UnDownvote")
 	public ModelAndView unDownvote(@RequestParam("definitionID") int definitionID, ModelMap model,
 			RedirectAttributes redirAttrs, HttpServletRequest request) {
 		Definition definition = definitionRepository.findById(definitionID);
-		
+
 		if (definition != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			User user = userService.findByUsername(auth.getName());
-			
+
 			if (user != null) {
-				user.getDownvotedDefinitions().removeIf(def->def.getId().intValue()==definitionID);
-				definition.setNdownvote(definition.getNdownvote()-1);
+				user.getDownvotedDefinitions().removeIf(def -> def.getId().intValue() == definitionID);
+				definition.setNdownvote(definition.getNdownvote() - 1);
 				userRepository.save(user);
 				definitionRepository.save(definition);
+			} else {
+				MessageHandling.activateErrors(model, "Not connected");
 			}
-			else
-			{
-				ErrorHandling.activateErrors(model, "Not connected");
-			}
+		} else {
+			MessageHandling.activateErrors(model, "Cannot take out the downvote.");
 		}
-		else
-		{
-			ErrorHandling.activateErrors(model, "Cannot take out the downvote.");
-		}
-		
+
 		String referer = request.getHeader("Referer");
-		return new ModelAndView("redirect:"+referer, model);
+		return new ModelAndView("redirect:" + referer, model);
 	}
-	
+
 	@PostMapping("/UnUpvote")
 	public ModelAndView unUpvote(@RequestParam("definitionID") int definitionID, ModelMap model,
 			RedirectAttributes redirAttrs, HttpServletRequest request) {
 		Definition definition = definitionRepository.findById(definitionID);
-		
+
 		if (definition != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			User user = userService.findByUsername(auth.getName());
-			
+
 			if (user != null) {
-				user.getUpvotedDefinitions().removeIf(def->def.getId().intValue()==definitionID);
-				definition.setNupvote(definition.getNupvote()-1);
+				user.getUpvotedDefinitions().removeIf(def -> def.getId().intValue() == definitionID);
+				definition.setNupvote(definition.getNupvote() - 1);
 				userRepository.save(user);
 				definitionRepository.save(definition);
+			} else {
+				MessageHandling.activateErrors(model, "Not connected");
 			}
-			else
-			{
-				ErrorHandling.activateErrors(model, "Not connected");
-			}
+		} else {
+			MessageHandling.activateErrors(model, "Cannot take out the upvote.");
 		}
-		else
-		{
-			ErrorHandling.activateErrors(model, "Cannot take out the upvote.");
-		}
-		
+
 		String referer = request.getHeader("Referer");
-		return new ModelAndView("redirect:"+referer, model);
+		return new ModelAndView("redirect:" + referer, model);
 	}
-	
 
 	/**
 	 * Function called when a user wants to add a new definition
@@ -273,10 +297,21 @@ public class DefinitionController {
 	 */
 	@GetMapping("/definition/create")
 	public String form(ModelMap model) {
-		model.put("definition", new Definition());
-		
+
+		DefinitionWrapper definitionWrapper = new DefinitionWrapper();
 		List<Tag> tags = tagRepository.findAll();
-		model.addAttribute("tags",tags);
+
+		List<TagSelected> tagsSelected = tags.stream().map(tag -> {
+			TagSelected tagSelected = new TagSelected();
+			tagSelected.setTag(tag);
+			return tagSelected;
+		}).collect(Collectors.toList());
+
+		definitionWrapper.setTags(tagsSelected);
+
+		definitionWrapper.setDefinition(new Definition());
+		model.put("definitionWrapper", definitionWrapper);
+
 		//////////////
 		// UPDATE //
 		// CHAP_06 //
@@ -299,9 +334,10 @@ public class DefinitionController {
 	 * @return
 	 */
 	@PostMapping("/SaveDefinition")
-	public String save(@Validated @ModelAttribute Definition definition, BindingResult errors, Model model,
-			RedirectAttributes redirAttrs) {
+	public ModelAndView save(@Validated @ModelAttribute DefinitionWrapper definitionWrapper, BindingResult errors,
+			ModelMap model, RedirectAttributes redirAttrs) {
 
+		System.out.println(errors);
 		if (!errors.hasErrors()) {
 			//////////////
 			// UPDATE //
@@ -309,16 +345,33 @@ public class DefinitionController {
 			//////////////
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			User creator = userService.findByUsername(auth.getName());
-			if (creator != null)
+			Definition definition = definitionWrapper.getDefinition();
+			if (creator != null && definition != null) {
 				definition.setCreator(creator);
 
-			// Save using Chap5 JPA query
-			if (definition.validate())
-				definitionRepository.save(definition);
-			else
-				throw new RuntimeException("The task is not complete ! Please fill all the fields");
+				// Save using Chap5 JPA query
+				if (definition.validate()) {
+
+					Set<Tag> tags = definitionWrapper.getTags().stream()//
+							.filter(TagSelected::getSelected)//
+							.map(TagSelected::getTag)//
+							.collect(Collectors.toSet());//
+
+					definition.setContainingTags(tags);
+					definitionRepository.save(definition);
+				} else {
+					return MessageHandling.redirectWithErrors("redirect:/definition/create",  "Please fill all the fields !");
+				}
+			}
+
 		}
-		return ((errors.hasErrors()) ? "definition" : "redirect:/definitions");
+		else
+		{
+			return MessageHandling.redirectWithErrors("redirect:/definition/create", "Errors in fields !");
+		}
+		return MessageHandling.redirectWithSuccess("redirect:/definitions","Definition created !");
+		
+		//return ((errors.hasErrors()) ? "home" : "redirect:/definitions");
 	}
 
 }

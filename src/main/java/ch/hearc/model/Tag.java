@@ -23,7 +23,7 @@ public class Tag {
 	@Column(nullable=false,length=7)
 	private String color;
 	
-	@Column(nullable=false, length=50)
+	@Column(nullable=false, unique=true, length=50)
 	private String name;
 	
 	@ManyToOne
@@ -79,5 +79,9 @@ public class Tag {
 		this.containedTags = containedTags;
 	}
 	
-	
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return this.name.hashCode();
+	}
 }

@@ -58,6 +58,10 @@ public class Definition {
 		return (!creator.getUsername().isEmpty() && !word.isEmpty() && !description.isEmpty());
 	}
 	
+	@Override
+	public String toString() {
+		return word+" [by "+creator.getUsername() + "]: " + description;
+	}
 	
 	//GETTERS
 	

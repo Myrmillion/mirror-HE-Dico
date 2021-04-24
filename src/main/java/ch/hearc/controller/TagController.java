@@ -27,7 +27,7 @@ import ch.hearc.model.User;
 import ch.hearc.repository.TagRepository;
 import ch.hearc.repository.UserRepository;
 import ch.hearc.service.UserService;
-import ch.hearc.tools.ErrorHandling;
+import ch.hearc.tools.MessageHandling;
 
 @Controller
 public class TagController {
@@ -85,7 +85,7 @@ public class TagController {
 			return new ModelAndView("my-tags", model);
 
 		} else {
-			ErrorHandling.activateErrors(model,"Couldn't update tag !");
+			MessageHandling.activateErrors(model,"Couldn't update tag !");
 			return new ModelAndView("my-tags", model);
 		}
 	}
@@ -99,7 +99,7 @@ public class TagController {
 			if (tags.size() > 0) {
 				model.addAttribute("tags", tags);
 			} else {
-				ErrorHandling.activateErrors(model,"No tags created !");
+				MessageHandling.activateErrors(model,"No tags created !");
 			}
 			return new ModelAndView("my-tags", model);
 		} else {

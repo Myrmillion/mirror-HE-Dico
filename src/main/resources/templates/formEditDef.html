@@ -7,21 +7,36 @@
 <!-- Replace fragment  -->
 	<div th:replace="fragments/fragments.html :: navigation"></div>
 	
-	<h1>Create Definition</h1>
+	<h1>Edit Definition</h1>
+	<div th:replace="fragments/fragments.html :: showErrors"></div>
 	<section class="text-center">
 	
-	<form action="#" th:action="@{/EditDefinition}" th:object="${definition}"
+	<form action="#" th:action="@{/EditDefinition}" th:object="${definitionWrapper}"
 						method="post">
-	<input type="hidden" th:field="*{id}" id="defID" name="defid">
+	<div th:object="${definitionWrapper.definition}">
+	<input type="hidden" th:field="*{id}">
 	<label for="message">Word</label>
-	<input type="text" th:field="*{word}" class="form-control todo-list-input" />
-	<label for="message">Description</label>
-	<input type="text" th:field="*{description}" class="form-control todo-list-input" />
-						
-	<button type="submit" class="btn btn-primary">Edit</button>
+		<input type="text" th:field="*{word}" class="form-control todo-list-input" />
+    <label for="message">Description</label>
+    <input type="text" th:field="*{description}" class="form-control todo-list-input" />
+	</div>
+   	<div id="blockTags">
+   	<input type="text" id="searchBar" onkeyup="search()" placeholder="Search for names..">
+	<div th:each="tagSel, itemStat : *{tags}">		
+		<label th:unless="*{tags[__${itemStat.index}__].selected}" style="display:none" th:for="'tag-'+${tagSel.tag.getId()}"  th:text="${tagSel.tag.getName()}"></label>
+		<input th:unless="*{tags[__${itemStat.index}__].selected}" style="display:none" type="checkbox" th:field="*{tags[__${itemStat.index}__].selected}" th:id="'tag-'+${tagSel.tag.getId()}"/>
+		<label th:if="*{tags[__${itemStat.index}__].selected}" th:for="'tag-'+${tagSel.tag.getId()}"  th:text="${tagSel.tag.getName()}"></label>
+		<input th:if="*{tags[__${itemStat.index}__].selected}" type="checkbox" selected="selected" th:field="*{tags[__${itemStat.index}__].selected}" th:id="'tag-'+${tagSel.tag.getId()}"/>
+		
+		<input type="hidden" th:value="*{tags[__${itemStat.index}__].tag.id}" th:field="*{tags[__${itemStat.index}__].tag}">
+		
+	</div>
+	</div>
+	<button type="submit" class="btn btn-primary">Submit</button>
 
 	</form>
 	
 	</section>
+	<script type="text/javascript" th:src="@{/js/search.js}"></script>
 </body>
 </html>
