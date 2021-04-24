@@ -25,7 +25,7 @@
 				<div id="searchByWord" class="mb-5">
 	                <div class="display-4 font-weight-bold text-white mb-2">Search by word : </div>
 	                <form th:action="@{/search}" class="text-center d-block m-auto" method="get">
-	                    <input type="text" class="w-75 h3 align-middle input-word text-center d-inline-block mb-3" id="word" name="word" th:placeholder="word" /><br>
+	                    <input type="text" class="w-75 h3 align-middle input-word text-center font-weight-bold d-inline-block mb-3" id="word" name="word" th:placeholder="word" /><br>
 	                    <button type="submit" class="btn btn-he-dico-blue align-middle button-mine d-inline-block"><i class="fas fa-search"></i></button>
 	                </form>
                 </div>
@@ -40,6 +40,11 @@
 
                 <div th:if="${not #lists.isEmpty(definitions)}">
                     <div class="border-035 border-he-dico-blue p-4 text-left mb-4 bg-white" th:each="definition: ${definitions}">
+                        
+                        <div class="d-inline-block" th:each="tag: ${definition.containingTags}">
+							<div class="h5 font-weight-bold d-inline-block p-2 mr-1 rounded text-white" th:style="|background-color:${tag.color};|" th:text="${tag.name}"></div>
+						</div>
+                        
                         <div class="display-4 mb-3 font-weight-bold" th:text="${definition.word}"></div>                     
                         <div class="h5 mb-3" th:text="${definition.description}"></div>
                         <div class="h5">
@@ -92,9 +97,11 @@
 						</div>
                         <div class="font-weight-bold h5" sec:authorize="not isAuthenticated()">
                             <span th:text="${definition.nupvote}"></span>
-                            <button class="btn btn-lg btn-success" disabled type="submit"><i class="fas fa-thumbs-up"></i></button>
+                            <button class="btn btn-lg btn-success" data-toggle="tooltip" data-placement="top" title="You must be logged in." type="submit" disabled>
+                            	<i class="fas fa-thumbs-up"></i>
+                           	</button>
                             <span th:text="${definition.ndownvote}"></span>
-                            <button class="btn btn-lg btn-danger" disabled type="submit"><i class="fas fa-thumbs-down"></i></button>
+                            <button class="btn btn-lg btn-danger" data-toggle="tooltip" data-placement="top" title="You must be logged in." type="submit" disabled><i class="fas fa-thumbs-down"></i></button>
                         </div>
                     </div>
                 </div>
