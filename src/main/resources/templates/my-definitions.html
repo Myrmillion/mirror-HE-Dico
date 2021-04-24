@@ -23,6 +23,11 @@
 
 				<div th:if="${not #lists.isEmpty(definitions)}">
 					<div class="border-035 border-he-dico-blue p-4 text-left mb-4 bg-white" th:each="definition: ${definitions}">
+						
+						<div class="d-inline-block" th:each="tag: ${definition.containingTags}">
+							<div class="h5 font-weight-bold d-inline-block p-2 mr-1 rounded text-white" th:style="|background-color:${tag.color};|" th:text="${tag.name}"></div>
+						</div>
+						
 						<div class="display-4 mb-3 font-weight-bold" th:text="${definition.word}"></div>
 						<div class="h5" th:text="${definition.description}"></div>
 						<div class="mt-4">
