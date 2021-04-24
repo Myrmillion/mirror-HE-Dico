@@ -50,6 +50,7 @@
                         <div class="h4 mt-4" sec:authorize="isAuthenticated()">
 							
 							<div class="d-inline-block mr-3">
+							
 								<span class="font-weight-bold" th:text="${definition.nupvote}"></span>
 	
 	                            <form id="upvoteForm" class="d-inline-block" th:action="@{/Upvote}" method="post"
@@ -80,8 +81,15 @@
 	                                <button class="btn btn-lg btn-dark" type="submit"><i class="fas fa-thumbs-down"></i></button>
 	                            </form>
                             </div>
-                        </div>
-
+                                     
+	                      	<span sec:authorize="hasAuthority('MODERATOR')" class="float-right">
+							<form th:action="@{/definition/delete}"	method="post" class="d-inline-block">
+							<input type="hidden" th:value="${definition.id}"
+								id="definitionID" name="definitionID">
+							<button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+							</form>
+							</span>
+						</div>
                         <div class="font-weight-bold h5" sec:authorize="not isAuthenticated()">
                             <span th:text="${definition.nupvote}"></span>
                             <button class="btn btn-lg btn-success" disabled type="submit"><i class="fas fa-thumbs-up"></i></button>
