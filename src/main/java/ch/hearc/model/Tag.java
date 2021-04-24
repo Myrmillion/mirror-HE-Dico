@@ -2,8 +2,10 @@ package ch.hearc.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +32,14 @@ public class Tag {
 	@JoinColumn(name="user_id")
 	private User creator;
 	
-	@ManyToMany(mappedBy="containingTags")
+	@ManyToMany(mappedBy="containingTags",fetch = FetchType.LAZY,
+	        cascade =
+	        {
+	                CascadeType.DETACH,
+	                CascadeType.MERGE,
+	                CascadeType.REFRESH,
+	                CascadeType.PERSIST
+	        })
 	private Set<Definition> containedTags;
 	
 	

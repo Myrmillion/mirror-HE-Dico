@@ -46,7 +46,14 @@ public class Definition {
 	@ManyToMany(mappedBy="downvotedDefinitions", fetch=FetchType.EAGER, cascade= {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<User> downvotes;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY,
+        cascade =
+        {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
+        })
 	@JoinTable(
 			name= "category",
 			joinColumns = @JoinColumn(name="definition_id"),

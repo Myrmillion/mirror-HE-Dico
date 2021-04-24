@@ -57,6 +57,42 @@ public class DefinitionController {
 
 		return new ModelAndView("home");
 	}
+	@GetMapping("/searchByTag")
+	public ModelAndView searchByTag(@RequestParam(value = "name", required = true) String name, ModelMap model) {
+		if (name.length() > 0) {
+			Tag tag = tagRepository.findByName(name);
+			if(tag!=null)
+			{
+				Set<Definition> definitions = tag.getContainedTags();
+				if(definitions.size()>0)
+				{
+					model.addAttribute("definitions", definitions);
+
+					// upvotes and downvotes
+					Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+					User user = userService.findByUsername(auth.getName());
+					if (user != null) {
+						List<Integer> upvotes = user.getUpvotedDefinitions().stream().map(Definition::getId)
+								.collect(Collectors.toList());
+						List<Integer> downvotes = user.getDownvotedDefinitions().stream().map(Definition::getId)
+								.collect(Collectors.toList());
+						model.addAttribute("upvotes", upvotes);
+						model.addAttribute("downvotes", downvotes);
+					}
+				}
+				else {
+					model = MessageHandling.activateErrors(model, "No definition found with this tag.");
+				}
+				
+			}
+			else
+			{
+				model = MessageHandling.activateErrors(model, "No tag found with this name.");
+			}
+					
+		}
+		return new ModelAndView("home",model);
+	}
 
 	@GetMapping("/search")
 	public ModelAndView search(@RequestParam(value = "word", required = true) String word, ModelMap model) {

@@ -13,12 +13,27 @@
 
     <div class="d-flex justify-content-center p-4">
         <div class="flex-column w-50">
+        	
+        	<label class="switch">
+			  <input id="switch" type="checkbox" onclick="changeForm()">
+			  <span class="slider round"></span>
+			</label>
+			<span class="font-weight-bold text-white mb-2">by Tag</span>
+        	
             <div class="text-center">
-
-				<div class="mb-5">
-	                <div class="display-4 font-weight-bold text-white mb-2">Cherchez un mot : </div>
+		
+				<div id="searchByWord" class="mb-5">
+	                <div class="display-4 font-weight-bold text-white mb-2">Search by word : </div>
 	                <form th:action="@{/search}" class="text-center d-block m-auto" method="get">
 	                    <input type="text" class="w-75 h3 align-middle input-word text-center d-inline-block mb-3" id="word" name="word" th:placeholder="word" /><br>
+	                    <button type="submit" class="btn btn-he-dico-blue align-middle button-mine d-inline-block"><i class="fas fa-search"></i></button>
+	                </form>
+                </div>
+                
+                <div id="searchByTag" class="mb-5" style="display:none">
+	                <div class="display-4 font-weight-bold text-white mb-2">Search by tag : </div>
+	                <form th:action="@{/searchByTag}" class="text-center d-block m-auto" method="get">
+	                    <input type="text" class="w-75 h3 align-middle input-word text-center d-inline-block mb-3" id="name" name="name" th:placeholder="name" /><br>
 	                    <button type="submit" class="btn btn-he-dico-blue align-middle button-mine d-inline-block"><i class="fas fa-search"></i></button>
 	                </form>
                 </div>
@@ -78,6 +93,7 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" th:src="@{/js/changeForm.js}"></script>
 </body>
 
 </html>
