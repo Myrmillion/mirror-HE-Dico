@@ -82,13 +82,11 @@ public class DefinitionController {
 				}
 				else {
 					return MessageHandling.redirectWithErrors("redirect:/", "No definition found for this tag !");
-					//model = MessageHandling.activateErrors(model, "No definition found with this tag.");
 				}
 			}
 			else
 			{
 				return MessageHandling.redirectWithErrors("redirect:/", "No tag found with this name !");
-				//model = MessageHandling.activateErrors(model, "No tag found with this name.");
 			}
 					
 		}
