@@ -8,6 +8,7 @@
 	<div th:replace="fragments/fragments.html :: navigation"></div>
 
 	<div th:replace="fragments/fragments.html :: showErrors"></div>
+	
 	<div th:replace="fragments/fragments.html :: showSuccesses"></div>
 
 	<div class="d-flex justify-content-center p-4">
@@ -16,7 +17,7 @@
 
 				<a class="btn btn-lg btn-he-dico-blue w-auto font-weight-bold mb-5"
 					th:href="@{/definition/create}">
-					Créer une nouvelle définition
+					Create a new definition
 				</a>
 
 				<div th:if="${not #lists.isEmpty(definitions)}">
@@ -40,6 +41,9 @@
 							</form>
 						</div>
 					</div>
+				</div>
+				<div th:if="${#lists.isEmpty(definitions)}">
+					<div class="display-4 text-white font-weight-bold">Your definition list is empty.</div>
 				</div>
 
 			</div>

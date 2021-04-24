@@ -78,7 +78,7 @@ public class DefinitionController {
 					model.addAttribute("downvotes", downvotes);
 				}
 			} else {
-				MessageHandling.activateErrors(model, "No definition found with this word.");
+				return MessageHandling.redirectWithErrors("redirect:/", "No definition found for this word !");
 			}
 		}
 		return new ModelAndView("home", model);
@@ -90,11 +90,11 @@ public class DefinitionController {
 		User creator = userService.findByUsername(auth.getName());
 		if (creator != null) {
 			List<Definition> definitions = creator.getDefinitions();
+
 			if (definitions.size() > 0) {
 				model.addAttribute("definitions", definitions);
-			} else {
-				MessageHandling.activateErrors(model, "No definitions created !");
 			}
+			
 			return new ModelAndView("my-definitions", model);
 		} else {
 			return new ModelAndView("home", model);
@@ -104,7 +104,7 @@ public class DefinitionController {
 	@RequestMapping(value = "/definition/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView formEdit(@PathVariable int id, ModelMap model) {
 		Definition definition = definitionRepository.findById(id);
-		
+
 		if (definition != null) {
 			List<Tag> tags = tagRepository.findAll();
 			DefinitionWrapper definitionWrapper = new DefinitionWrapper();
@@ -114,13 +114,11 @@ public class DefinitionController {
 					.map(Tag::getId)//
 					.collect(Collectors.toList());
 			List<TagSelected> tagsSelected = new LinkedList<TagSelected>();
-			for(Tag tag : tags)
-			{
+			for (Tag tag : tags) {
 				TagSelected tagSelected = new TagSelected();
 				tagSelected.setTag(tag);
 				boolean selected = false;
-				if(tagsDefinition.contains(tag.getId()))
-				{
+				if (tagsDefinition.contains(tag.getId())) {
 					selected = true;
 				}
 				tagSelected.setSelected(selected);
@@ -136,36 +134,38 @@ public class DefinitionController {
 	}
 
 	@PostMapping("/EditDefinition")
-	public ModelAndView editDefinition(@Validated @ModelAttribute DefinitionWrapper definitionWrapper, BindingResult errors,
-			ModelMap model, RedirectAttributes redirAttrs, HttpServletRequest request) {
+	public ModelAndView editDefinition(@Validated @ModelAttribute DefinitionWrapper definitionWrapper,
+			BindingResult errors, ModelMap model, RedirectAttributes redirAttrs, HttpServletRequest request) {
 		String referer = request.getHeader("Referer");
-		if (!errors.hasErrors()) {
+		if (!errors.hasErrors())
+		{
 			Definition definitionFromWrapper = definitionWrapper.getDefinition();
 			Definition definitionToUpdate = definitionRepository.findById(definitionFromWrapper.getId());
-			if (definitionToUpdate != null) {
-				definitionFromWrapper.setCreator(definitionToUpdate.getCreator());
-				if(definitionFromWrapper.validate())
-				{
-				definitionToUpdate.setWord(definitionFromWrapper.getWord());
-				definitionToUpdate.setDescription(definitionFromWrapper.getDescription());
-				Set<Tag> tags = definitionWrapper.getTags().stream()//
-						.filter(TagSelected::getSelected)//
-						.map(TagSelected::getTag)//
-						.collect(Collectors.toSet());//
-				
-				definitionToUpdate.setContainingTags(tags);
-				definitionRepository.save(definitionToUpdate);
-				return MessageHandling.redirectWithSuccess("redirect:/definitions", "Definition Updated !");
-				}
-				return MessageHandling.redirectWithErrors("redirect:"+referer, "Missing fields");
-			}
-			//return new ModelAndView("my-definitions", model);
-
-		} 
-			//MessageHandling.activateErrors(model, "Couldn't update definition !");
-			//return new ModelAndView("my-definitions", model);
 			
-			return MessageHandling.redirectWithErrors("redirect:" + referer, "Couldn't updated definition.");
+			if (definitionToUpdate != null)
+			{
+				definitionFromWrapper.setCreator(definitionToUpdate.getCreator());
+				
+				if (definitionFromWrapper.validate())
+				{
+					definitionToUpdate.setWord(definitionFromWrapper.getWord());
+					definitionToUpdate.setDescription(definitionFromWrapper.getDescription());
+					Set<Tag> tags = definitionWrapper.getTags().stream()//
+							.filter(TagSelected::getSelected)//
+							.map(TagSelected::getTag)//
+							.collect(Collectors.toSet());//
+
+					definitionToUpdate.setContainingTags(tags);
+					definitionRepository.save(definitionToUpdate);
+					
+					return MessageHandling.redirectWithSuccess("redirect:/definitions", "Definition Updated !");
+				}
+				return MessageHandling.redirectWithErrors("redirect:" + referer, "Missing fields !");
+			}
+
+		}
+
+		return MessageHandling.redirectWithErrors("redirect:" + referer, "Couldn't updated definition.");
 	}
 
 	@RequestMapping(value = "/definition/delete", method = RequestMethod.POST)
@@ -176,7 +176,7 @@ public class DefinitionController {
 			definitionRepository.delete(definitionToDelete);
 		}
 
-		return new ModelAndView("redirect:/definitions", model);
+		return MessageHandling.redirectWithSuccess("redirect:/definitions", "Definition deleted !");
 	}
 
 	@PostMapping("/Upvote")
@@ -300,7 +300,7 @@ public class DefinitionController {
 
 		DefinitionWrapper definitionWrapper = new DefinitionWrapper();
 		List<Tag> tags = tagRepository.findAll();
-		
+
 		List<TagSelected> tagsSelected = tags.stream().map(tag -> {
 			TagSelected tagSelected = new TagSelected();
 			tagSelected.setTag(tag);
@@ -351,29 +351,25 @@ public class DefinitionController {
 
 				// Save using Chap5 JPA query
 				if (definition.validate()) {
-					if(definitionWrapper.getTags()!=null)
-					{
-					Set<Tag> tags = definitionWrapper.getTags().stream()//
-							.filter(TagSelected::getSelected)//
-							.map(TagSelected::getTag)//
-							.collect(Collectors.toSet());//
+					if (definitionWrapper.getTags() != null) {
+						Set<Tag> tags = definitionWrapper.getTags().stream()//
+								.filter(TagSelected::getSelected)//
+								.map(TagSelected::getTag)//
+								.collect(Collectors.toSet());//
 
-					definition.setContainingTags(tags);			
+						definition.setContainingTags(tags);
 					}
 					definitionRepository.save(definition);
 				} else {
-					return MessageHandling.redirectWithErrors("redirect:/definition/create",  "Please fill all the fields !");
+					return MessageHandling.redirectWithErrors("redirect:/definition/create",
+							"Please fill all the fields !");
 				}
 			}
-
-		}
-		else
-		{
+		} else {
 			return MessageHandling.redirectWithErrors("redirect:/definition/create", "Errors in fields !");
 		}
-		return MessageHandling.redirectWithSuccess("redirect:/definitions","Definition created !");
-		
-		//return ((errors.hasErrors()) ? "home" : "redirect:/definitions");
+		return MessageHandling.redirectWithSuccess("redirect:/definitions", "Definition created !");
+		// return ((errors.hasErrors()) ? "home" : "redirect:/definitions");
 	}
 
 }

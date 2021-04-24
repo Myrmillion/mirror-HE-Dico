@@ -39,18 +39,17 @@ public class TagController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private UserService userService;
-	
-	
+
 	@GetMapping("/tag/create")
 	public String formCreate(ModelMap model) {
 		model.put("tag", new Tag());
 
 		return "formulaireTag";
 	}
-	
+
 	@RequestMapping(value = "/tag/edit/{id}", method = RequestMethod.GET)
 	public ModelAndView formEdit(@PathVariable int id, ModelMap model) {
 		Tag tag = tagRepository.findById(id);
@@ -60,9 +59,8 @@ public class TagController {
 		} else {
 			return new ModelAndView("my-tags", model);
 		}
-
 	}
-	
+
 	@RequestMapping(value = "/tag/delete", method = RequestMethod.POST)
 	public ModelAndView deleteDefinition(@RequestParam("tagID") int tagID, ModelMap model,
 			RedirectAttributes redirAttrs) {
@@ -71,28 +69,34 @@ public class TagController {
 			tagRepository.delete(tagToDelete);
 		}
 
-		return new ModelAndView("redirect:/tags", model);
+		return MessageHandling.redirectWithSuccess("redirect:/tags", "Tag deleted !");
 	}
-	
+
 	@PostMapping("/EditTag")
-	public ModelAndView editDefinition(@Validated @ModelAttribute Tag tag, BindingResult errors,
-			ModelMap model, RedirectAttributes redirAttrs, HttpServletRequest request) {
+	public ModelAndView editDefinition(@Validated @ModelAttribute Tag tag, BindingResult errors, ModelMap model,
+			RedirectAttributes redirAttrs, HttpServletRequest request) {
 		String referer = request.getHeader("Referer");
-		if (!errors.hasErrors()) {
+		if (!errors.hasErrors())
+		{
 			Tag tagToUpdate = tagRepository.findById(tag.getId()).get();
-			if (tagToUpdate !=null) {
+			
+			if (tagToUpdate != null && !tag.getName().isEmpty())
+			{
 				tagToUpdate.setName(tag.getName());
 				tagToUpdate.setColor(tag.getColor());
 				tagRepository.save(tagToUpdate);
-			}
-			return MessageHandling.redirectWithSuccess("redirect:/tags","Tag updated !");
+				
+				return MessageHandling.redirectWithSuccess("redirect:/tags", "Tag updated !");
+			}	
+			return MessageHandling.redirectWithErrors("redirect:" + referer, "Missing fields !");
 
-		} else {
-			
-			return MessageHandling.redirectWithErrors("redirect:"+referer,"Couldn't update tag !");
+		}
+		else
+		{
+			return MessageHandling.redirectWithErrors("redirect:" + referer, "Couldn't update tag !");
 		}
 	}
-	
+
 	@GetMapping("/tags")
 	public ModelAndView myTags(ModelMap model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -101,17 +105,15 @@ public class TagController {
 			List<Tag> tags = creator.getTags();
 			if (tags.size() > 0) {
 				model.addAttribute("tags", tags);
-			} else {
-				MessageHandling.activateErrors(model,"No tags created !");
 			}
 			return new ModelAndView("my-tags", model);
 		} else {
 			return new ModelAndView("home", model);
 		}
 	}
-	
+
 	@PostMapping("/SaveTag")
-	public String save(@Validated @ModelAttribute Tag tag, BindingResult errors, Model model,
+	public ModelAndView save(@Validated @ModelAttribute Tag tag, BindingResult errors, Model model,
 			RedirectAttributes redirAttrs) {
 
 		if (!errors.hasErrors()) {
@@ -129,12 +131,12 @@ public class TagController {
 				System.out.println("YOOOOOOOOOOOOOOOO");
 				System.out.println(tag.getColor());
 				tagRepository.save(tag);
+			} else {
+				return MessageHandling.redirectWithErrors("redirect:/tag/create", "Please fill all the fields !");
 			}
-			else
-			{
-				throw new RuntimeException("The task is not complete ! Please fill all the fields");
-			}
+		} else {
+			return MessageHandling.redirectWithErrors("redirect:/tag/create", "Errors in fields !");
 		}
-		return ((errors.hasErrors()) ? "tag" : "redirect:/tags");
+		return MessageHandling.redirectWithSuccess("redirect:/tags", "Tag created !");
 	}
 }

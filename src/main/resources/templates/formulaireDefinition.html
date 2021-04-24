@@ -16,7 +16,7 @@
 			   <form action="#" th:action="@{/SaveDefinition}" method="post" th:object="${definitionWrapper}">
                             
 				    <div th:object="${definitionWrapper.definition}">
-					    <label class="h5 font-weight-bold" for="message">Mot ou expression</label>
+					    <label class="h5 font-weight-bold" for="message">Word or expression</label>
 				        <input type="text" th:field="*{word}" class="form-control todo-list-input" />
 					    <label class="h5 mt-3 font-weight-bold" for="message">Description</label>
 					    <input type="text" th:field="*{description}" class="form-control todo-list-input" />
@@ -31,7 +31,7 @@
 					        <input type="hidden" th:value="*{tags[__${itemStat.index}__].tag.id}" th:field="*{tags[__${itemStat.index}__].tag}">
 					    </div>
 				    </div>
-				    <button type="submit" class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase mt-2">Créer</button>		
+				    <button type="submit" class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase mt-2">Create</button>		
 			    </form>
 			    
 			</div>

@@ -57,12 +57,12 @@
 				th:href="@{/}"> Home </a>
 			<a sec:authorize="isAuthenticated()"
 				class="navbar-brand mr-5"
-				th:classappend="${#httpServletRequest.requestURI eq '/definitions' ? 'font-weight-bold' : 'font-weight-normal'}"
-				th:href="@{/definitions}"> Mes définitions </a>
+				th:classappend="${#httpServletRequest.requestURI eq '/definitions' or #httpServletRequest.requestURI eq '/definition/create' ? 'font-weight-bold' : 'font-weight-normal'}"
+				th:href="@{/definitions}"> My definitions </a>
 				<a
 				sec:authorize="isAuthenticated()" class="navbar-brand"
-				th:classappend="${#httpServletRequest.requestURI eq '/tags' ? 'font-weight-bold' : 'font-weight-normal'}"
-				th:href="@{/tags}"> Mes tags </a>
+				th:classappend="${#httpServletRequest.requestURI eq '/tags' or #httpServletRequest.requestURI eq '/tag/create' ? 'font-weight-bold' : 'font-weight-normal'}"
+				th:href="@{/tags}"> My tags </a>
 
 			<div class="navbar-nav nav-item dropdown ml-auto cursor-pointer"
 				sec:authorize="isAuthenticated()">
