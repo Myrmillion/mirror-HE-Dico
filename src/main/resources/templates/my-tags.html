@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+	<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+
+	<div th:replace="fragments/fragments.html :: showErrors"></div>
+	<div th:replace="fragments/fragments.html :: showSuccesses"></div>
+
+	<div class="d-flex justify-content-center p-4">
+		<div class="flex-column w-25">
+			<div class="text-center">
+
+				<a class="btn btn-lg btn-he-dico-blue font-weight-bold mb-5"
+					th:href="@{/tag/create}">Create a new tag</a>
+
+				<div th:if="${not #lists.isEmpty(tags)}">
+					<div class="border-035 border-he-dico-blue p-4 mb-4 bg-white"
+						th:each="tag: ${tags}">
+						<div class="display-4 mb-3 font-weight-bold font-size-225" th:text="${tag.name}"
+							th:style="|color:${tag.color};|"></div>
+						<div>
+							<a class="btn btn-he-dico-blue d-inline-block"
+								th:href="@{'/tag/edit/'+${tag.id}}"> <i class="fas fa-edit"></i>
+							</a>
+							<form id="tagForm" th:action="@{/tag/delete}" method="post"
+								class="d-inline-block">
+								<input type="hidden" th:value="${tag.id}" id="tagID" name="tagID">
+								<button type="submit" class="btn btn-danger">
+									<i class="fas fa-trash"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div th:if="${#lists.isEmpty(tags)}">
+					<div class="display-4 text-white font-weight-bold">Your tag list is empty.</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

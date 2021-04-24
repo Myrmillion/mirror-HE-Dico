@@ -2,8 +2,10 @@ package ch.hearc.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,13 +40,20 @@ public class Definition {
 	@JoinColumn(name="user_id")
 	private User creator;
 	
-	@ManyToMany(mappedBy="upvotedDefinitions")
+	@ManyToMany(mappedBy="upvotedDefinitions", fetch=FetchType.EAGER, cascade= {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<User> upvotes;
 	
-	@ManyToMany(mappedBy="downvotedDefinitions")
+	@ManyToMany(mappedBy="downvotedDefinitions", fetch=FetchType.EAGER, cascade= {CascadeType.PERSIST,CascadeType.REMOVE})
 	private Set<User> downvotes;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY,
+        cascade =
+        {
+                CascadeType.DETACH,
+                CascadeType.MERGE,
+                CascadeType.REFRESH,
+                CascadeType.PERSIST
+        })
 	@JoinTable(
 			name= "category",
 			joinColumns = @JoinColumn(name="definition_id"),
@@ -57,6 +66,10 @@ public class Definition {
 		return (!creator.getUsername().isEmpty() && !word.isEmpty() && !description.isEmpty());
 	}
 	
+	@Override
+	public String toString() {
+		return word+" [by "+creator.getUsername() + "]: " + description;
+	}
 	
 	//GETTERS
 	

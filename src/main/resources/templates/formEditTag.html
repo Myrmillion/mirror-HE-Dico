@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+	
+	<div th:replace="fragments/fragments.html :: showErrors"></div>
+	
+	<div class="d-flex justify-content-center p-4">
+		<div class="flex-column w-25">
+			<div class="text-center border-035 border-he-dico-blue px-5 py-4 mt-5 bg-white">
+				
+				<form action="#" th:action="@{/EditTag}" th:object="${tag}" method="post">
+							
+					<input type="hidden" th:field="*{id}" id="defID" name="defID">		
+					<label class="h5 font-weight-bold" for="message">Label</label>
+					<input type="text" th:field="*{name}" class="form-control todo-list-input" />
+					<label class="h5 mt-3 font-weight-bold" for="message">Color</label>
+					<input type="color" th:value="*{color}" th:field="*{color}" class="form-control todo-list-input mb-4" />
+										
+					<button type="submit" class="btn btn-lg btn-he-dico-blue font-weight-bold text-uppercase mt-2">Edit</button>
+				
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+	
+	<h1>My Tags</h1>
+	
+	<div th:replace="fragments/fragments.html :: showErrors"></div>
+	
+	<section class="text-center">
+	
+	<div th:if="${not #lists.isEmpty(tags)}">
+		<div th:each="tag: ${tags}">
+			<p th:text="${tag.name}" th:style="|color:${tag.color};|"></p>
+			<a th:href="@{'/tag/edit/'+${tag.id}}">Edit</a>
+			<form id="tagForm" th:action="@{/tag/delete}" method="post">
+			<input type="hidden" th:value="${tag.id}" id="tagID" name="tagID">
+			<button type="submit">Delete</button>
+			</form>
+			
+		</div>
+	</div>
+	</section>
+</body>
+</html>

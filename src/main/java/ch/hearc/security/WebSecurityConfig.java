@@ -48,8 +48,13 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception
 	{
 		http.authorizeRequests()
-		.antMatchers("/", "/home").permitAll()
-		.antMatchers("/formDefinition").authenticated()
+		.antMatchers("/", "/home", "/search", "/login", "signup").permitAll()
+		.antMatchers("/definitions", "/definitions/").authenticated()
+		.antMatchers("/definition/create", "/definition/create/").authenticated()
+		.antMatchers("/definition/edit/{id}", "/definition/edit/{id}/").authenticated()
+		.antMatchers("/tags", "/tags/").authenticated()
+		.antMatchers("/tag/create", "/tag/create/").authenticated()
+		.antMatchers("/tag/edit/{id}", "/tag/edit/{id}/").authenticated()
 		.and()
 		.formLogin().loginPage("/login").permitAll()
 		.and()

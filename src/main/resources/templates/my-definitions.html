@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+	<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+
+	<div th:replace="fragments/fragments.html :: showErrors"></div>
+	
+	<div th:replace="fragments/fragments.html :: showSuccesses"></div>
+
+	<div class="d-flex justify-content-center p-4">
+		<div class="flex-column w-50">
+			<div class="text-center">
+
+				<a class="btn btn-lg btn-he-dico-blue w-auto font-weight-bold mb-5"
+					th:href="@{/definition/create}">
+					Create a new definition
+				</a>
+
+				<div th:if="${not #lists.isEmpty(definitions)}">
+					<div class="border-035 border-he-dico-blue p-4 text-left mb-4 bg-white" th:each="definition: ${definitions}">
+						
+						<div class="d-inline-block" th:each="tag: ${definition.containingTags}">
+							<div class="h5 font-weight-bold d-inline-block p-2 mr-1 rounded text-white" th:style="|background-color:${tag.color};|" th:text="${tag.name}"></div>
+						</div>
+						
+						<div class="display-4 mb-3 font-weight-bold" th:text="${definition.word}"></div>
+						<div class="h5" th:text="${definition.description}"></div>
+						<div class="mt-4">
+							<a class="btn btn-he-dico-blue d-inline-block" th:href="@{'/definition/edit/'+${definition.id}}">
+								<i class="fas fa-edit"></i>
+							</a>
+							<form id="deleteForm" th:action="@{/definition/delete}"
+								method="post" class="d-inline-block">
+								<input type="hidden" th:value="${definition.id}"
+									id="definitionID" name="definitionID">
+								<button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div th:if="${#lists.isEmpty(definitions)}">
+					<div class="display-4 text-white font-weight-bold">Your definition list is empty.</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>
