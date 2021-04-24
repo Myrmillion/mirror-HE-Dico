@@ -1,0 +1,32 @@
+body {
+	height:100vh;
+	background-color:rgba(52,101,164,0.80) !important;
+}
+
+.input-word {
+	height: 3.4rem;
+}
+
+.navbar-logo {
+	width:6.0rem;
+}
+
+.button-mine {
+	font-size: 1.65rem !important;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.border-030 {
+  border: 0.30em solid !important;
+}
+
+.border-035 {
+  border: 0.35em solid !important;
+}
+
+.font-size-225 {
+	font-size: 2.25rem !important;
+}

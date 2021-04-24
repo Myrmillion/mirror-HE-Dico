@@ -176,7 +176,7 @@ public class DefinitionController {
 			definitionRepository.delete(definitionToDelete);
 		}
 
-		return new ModelAndView("my-definitions", model);
+		return new ModelAndView("redirect:/definitions", model);
 	}
 
 	@PostMapping("/Upvote")

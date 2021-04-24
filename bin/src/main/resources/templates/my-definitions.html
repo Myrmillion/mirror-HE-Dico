@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- Insert header fragment -->
+<head th:insert="fragments/fragments.html :: header">
+</head>
+<body>
+<!-- Replace fragment  -->
+	<div th:replace="fragments/fragments.html :: navigation"></div>
+	
+	<h1>My definitions</h1>
+	
+	<div th:replace="fragments/fragments.html :: showErrors"></div>
+	
+	<section class="text-center">
+	
+	<div th:if="${not #lists.isEmpty(definitions)}">
+		<div th:each="definition: ${definitions}">
+			<h3 th:text="${definition.word}"></h3>
+			<p th:text="${definition.description}"></p>
+			<a th:href="@{'/definition/edit/'+${definition.id}}">Edit</a>
+			<form id="deleteForm" th:action="@{/definition/delete}" method="post">
+			<input type="hidden" th:value="${definition.id}" id="definitionID" name="definitionID">
+			<button type="submit">Delete</button>
+			</form>
+			
+		</div>
+	</div>
+	</section>
+</body>
+</html>

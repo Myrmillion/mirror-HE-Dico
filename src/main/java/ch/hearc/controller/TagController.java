@@ -3,6 +3,8 @@ package ch.hearc.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,12 +71,13 @@ public class TagController {
 			tagRepository.delete(tagToDelete);
 		}
 
-		return new ModelAndView("my-tags", model);
+		return new ModelAndView("redirect:/tags", model);
 	}
 	
 	@PostMapping("/EditTag")
 	public ModelAndView editDefinition(@Validated @ModelAttribute Tag tag, BindingResult errors,
-			ModelMap model, RedirectAttributes redirAttrs) {
+			ModelMap model, RedirectAttributes redirAttrs, HttpServletRequest request) {
+		String referer = request.getHeader("Referer");
 		if (!errors.hasErrors()) {
 			Tag tagToUpdate = tagRepository.findById(tag.getId()).get();
 			if (tagToUpdate !=null) {
@@ -82,11 +85,11 @@ public class TagController {
 				tagToUpdate.setColor(tag.getColor());
 				tagRepository.save(tagToUpdate);
 			}
-			return new ModelAndView("my-tags", model);
+			return MessageHandling.redirectWithSuccess("redirect:/tags","Tag updated !");
 
 		} else {
-			MessageHandling.activateErrors(model,"Couldn't update tag !");
-			return new ModelAndView("my-tags", model);
+			
+			return MessageHandling.redirectWithErrors("redirect:"+referer,"Couldn't update tag !");
 		}
 	}
 	
