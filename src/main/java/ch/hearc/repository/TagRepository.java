@@ -8,4 +8,5 @@ import ch.hearc.model.Tag;
 @Repository("TagRepository")
 public interface TagRepository extends JpaRepository<Tag, Integer>{
 	Tag findById(int id);
+	Tag findByName(String name);
 }

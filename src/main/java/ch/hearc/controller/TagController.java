@@ -1,7 +1,7 @@
 package ch.hearc.controller;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -66,6 +66,11 @@ public class TagController {
 			RedirectAttributes redirAttrs) {
 		Tag tagToDelete = tagRepository.findById(tagID);
 		if (tagToDelete != null) {
+			Set<Definition> definitionsWithTag = tagToDelete.getContainedTags();
+			for(Definition def : definitionsWithTag)
+			{
+				def.getContainingTags().remove(tagToDelete);
+			}
 			tagRepository.delete(tagToDelete);
 		}
 
